@@ -1,13 +1,13 @@
 # main links
 main:
   - title: "DFIR"
-    url: /page-archive/
+    url: /categories/
   - title: "Tools"
     url : /year-archive/
   - title: "Windows Process"
     url: /post-archive-feature-rows/
   - title: "Autre"
-    url: /collection-archive/
+    url: /categories/
   - title: "Tous les posts"
     url: /categories/
 
