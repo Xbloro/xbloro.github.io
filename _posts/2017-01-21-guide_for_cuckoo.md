@@ -1,12 +1,11 @@
 ---
-title: "Post: DFIR"
+title: "Guide for installing Cuckoo "
 
 categories:
-  - toool
-  - DFIR
+  - Tool
 tags:
   - cuckoo
-  - tool
+  - Tool
 ---
 
 # Mise en place d'un serveur Cuckoo 
