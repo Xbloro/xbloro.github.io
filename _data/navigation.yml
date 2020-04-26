@@ -8,5 +8,7 @@ main:
     url: /post-archive-feature-rows/
   - title: "Autre"
     url: /collection-archive/
+  - title: "Tous les posts"
+    url: /categories/
 
 
