@@ -1,7 +1,7 @@
 # main links
 main:
   - title: "DFIR"
-    url: /categories/
+    url: /post-dfir/
   - title: "Tools"
     url : /post-tool/
   - title: "Windows Process"
