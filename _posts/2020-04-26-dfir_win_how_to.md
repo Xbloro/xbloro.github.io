@@ -8,6 +8,9 @@ tags:
   - Windows
 ---
 
+# Ce document est en cours de révisions 
+
+
 # Méthodologie d'analyse Inforensique Windows
 
 Ce document détaille quelques procédures et éléments intéressants lors d'une investigation forensique Windows.
@@ -202,7 +205,7 @@ Si vous avez fait une copie EWF choisissez "Disk image" et sélectionnez le fich
 
 Il va vous demander ensuite ce que vous voulez récupérer sur l'image disque. On sélectionne tout.  
 
-![alt text](Image/AutCheck.png?raw=true "Check")  
+![alt text](/assets/images/AutCheck.png?raw=true "Check")  
 
 Allez maintenant on peut allé se chercher un café car c'est long, très long...   
 Plus c'est gros, plus c'est l.. heuu ah oui le café  
