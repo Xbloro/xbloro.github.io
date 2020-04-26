@@ -1,5 +1,5 @@
 ---
-title: "Tool : DFIR"
+title: "Post: DFIR"
 
 categories:
   - toool
