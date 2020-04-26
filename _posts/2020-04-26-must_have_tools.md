@@ -3,11 +3,10 @@
 title: " Tool you Must Have on a DFIR "
 
 categories:
- - Tool
-
+  - Tool
 tags:
- - Tool
- - Windows
+  - Windows
+  - Tool
 
 ---
 
