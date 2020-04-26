@@ -1,12 +1,14 @@
 # main links
 main:
   - title: "DFIR"
-    url: https://mmistakes.github.io/minimal-mistakes/about/
+    url: https://githhub.com
   - title: "Blog"
     url: https://mmistakes.github.io/minimal-mistakes/about/
   - title: "Tools"
     url: /year-archive/
   - title: "Autre"
      url: /collection-archive/
+  - title: "Windows Process"
+    url: /docs/quick-start-guide/
   # - title: "Sitemap"
   #   url: /sitemap/
