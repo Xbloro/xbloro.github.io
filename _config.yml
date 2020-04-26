@@ -96,7 +96,7 @@ analytics:
 author:
   name             : "Hugo"
   avatar           :  "/assets/images/avatar.png"
-  bio              : "I am DFIR Dude"
+  bio              : "I am juste a little DFIR Dude"
   location         : "Somewhere"
   links:
     - label: "Twitter"
