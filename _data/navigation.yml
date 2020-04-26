@@ -3,9 +3,9 @@ main:
   - title: "DFIR"
     url: /categories/
   - title: "Tools"
-    url : /year-archive/
+    url : /post-tool/
   - title: "Windows Process"
-    url: /post-archive-feature-rows/
+    url: /post-tool/
   - title: "Autre"
     url: /categories/
   - title: "Tous les posts"
