@@ -36,7 +36,7 @@ main:
 docs:
   - title: Getting Started
     children:
-      - title: "Quick-Start Guide"
+      - title: "test"
         url: /docs/quick-start-guide/
       - title: "Structure"
         url: /docs/structure/
