@@ -67,28 +67,28 @@ Dans le menu on nous propose 3 choix :
 -Le second permet la même chose mais en plus de rechercher des IOCs (c'est plutôt cool);    
 -Le dernier permet de rechercher ses propres IOC. (Si vous êtes dans une entreprise et que vous voulez chercher des traces d'intrusions dans toute la foret info c'est assez sympa, suffit de déployer le payload via PowerShell ;) ).  
 
-![alt text](Image/menuCollecteur.png?raw=true "ChoixMenuRedline")
+![alt text](/assets/images/menuCollecteur.png?raw=true "ChoixMenuRedline")
 
 Dans chaque cas Redline vous propose d'éditer le script du payload, pour ajouter des fonctions (récupération de string par ex) mais ici on va le laisser par défaut.
 
 On va choisir l'option numéro 2 : "Comprehensive collector" 
 
 
-![alt text](Image/collecteur2.png?raw=true "ChoixN2")  
+![alt text](/assets/images/collecteur2.png?raw=true "ChoixN2")  
 
 
 
 Une deuxième fenêtre nous demande si on veut récupérer la mémoire de la machine, on coche la case (n1)  
 Puis on choisit l'emplacement de sauvegarde du Payload(n2) >> votre média Amovible.  
 
-<img src="Image/Collecteur3.png" width="600">
+<img src="/assets/images/Collecteur3.png" width="600">
 
 
 
 
 Et voila ! votre payload est prêt.  
 
-![alt text](Image/payload1.png?raw=true "Payload")
+![alt text](/assets/images/payload1.png?raw=true "Payload")
 
 A présent, on branche le média amovible sur le Windows cible et on exécute le script "RunRedlineAudit.bat".
 
@@ -104,7 +104,7 @@ Prévoyez une bonne quantité de stockage car on va récupérer tout ce qu'il y 
 Pour cela, le mieux (et dans le cadre d'une enquête juridique c'est obligatoire) est utiliser un tableau bloqueur-copieur.  
 C'est un équipement qui ressemble à ca :  
 
-<img src="Image/td2u.jpg" width="400">
+<img src="/assets/images/td2u.jpg" width="400">
 
 Il permet de bloquer le flux en écriture vers la machine cible et d'en faire une image disque vers votre matériel. Avec ça, pas d'atteinte à l'intégrité des données.  
 Avec l'accord (et oui toujours) de la SSI on éteint la machine et on prend les disques (juste le temps de les copier hein après il faut les rendre !). Nous avons éteint la machine pour copier les disques afin d'éviter une compromission des "preuves"  
@@ -195,7 +195,7 @@ Dans un premier temps il va vous demander les informations sur l'affaire, essaye
 
 On arrive ensuite au Menu ou on vous demande quel est le type de support que vous voulez importer, choisissez celui qui correspond.
 
-![alt text](Image/Autmenu.png?raw=true "Menu")    
+![alt text](/assets/images/Autmenu.png?raw=true "Menu")    
 
 
 Si vous avez fait une copie EWF choisissez "Disk image" et sélectionnez le fichier n1 (E01), les autres seront importés automatiquement par Autopsy.  
@@ -207,18 +207,18 @@ Il va vous demander ensuite ce que vous voulez récupérer sur l'image disque. O
 Allez maintenant on peut allé se chercher un café car c'est long, très long...   
 Plus c'est gros, plus c'est l.. heuu ah oui le café  
 
-![alt text](Image/AutLoad.png?raw=true "load")  
+![alt text](/assets/images/AutLoad.png?raw=true "load")  
 
 En attendant que le traitement soit fini, on va se familiariser avec l'interface de notre nouveau meilleur amie.
 
 Sur la partie gauche vous avez une arborescence. En haut on a la première partie qui nous permet de voir le contenu du disque de la même façon que quand il est  monté sur la machine hôte. C'est à partir de cet emplacement que vous allez pouvoir naviguer dans l'arborescence de la machine pour récupérer les logs ainsi que le trousseau de clés !
 
 
-![alt text](Image/AutSource.png?raw=true "Source")  
+![alt text](/assets/images/AutSource.png?raw=true "Source")  
 
 Pour exporter un fichier rien de plus simple, il suffit de cliquer droit et exporter, choisissez ensuite la destination sur votre machine.
 
-![alt text](Image/AutExport.png?raw=true "Export")
+![alt text](/assets/images/AutExport.png?raw=true "Export")
 
 Attention cependant, si vous exportez un fichier malveillant, dropez le dans un fichier inaccessible par votre antivirus car il risquerait de le compromettre. je vous conseille de le zippe(avec mdp) pour éviter de cliquer dessus sans faire exprès !
 
@@ -226,14 +226,14 @@ Attention cependant, si vous exportez un fichier malveillant, dropez le dans un 
 Ensuite arrive la partie View qui trie les fichiers par type etc. C'est aussi la que la partie CARVING est accessible. Souvenez vous dans la méthodologie la recherche dans les fichiers supprimés, ça se passe ici !
 
 
-![alt text](Image/AutView.png?raw=true "view")
+![alt text](/assets/images/AutView.png?raw=true "view")
 
 Enfin on a la partie Results qui permet de voir des éléments intéressants, je vous laisse regarder.
 La partie Exif permet accéder rapidement aux photos et à leur emplacement.
 Par exemple, si vous trouvez une image pornographique (oui oui ca arrive), et que vous voyez qu'elle était à l'origine dans un PowerPoint... Vous savez quoi faire ! (pour ceux qui savent pas, on va rechercher des macros malveillantes dans le ppt)
 
 
-![alt text](Image/AutRes.png?raw=true "res")
+![alt text](/assets/images/AutRes.png?raw=true "res")
 
 2.3 Le trousseau de clés
 -
