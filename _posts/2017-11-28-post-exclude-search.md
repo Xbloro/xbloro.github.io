@@ -2,7 +2,7 @@
 title:  "Exclude Post from Search Index"
 search: false
 categories: 
-  - Jekyll
+  - Tool
 last_modified_at: 2018-02-19T08:05:34-05:00
 ---
 
