@@ -2,12 +2,11 @@
 main:
   - title: "DFIR"
     url: https://github.com
-  - title: "Blog"
-    url: https://mmistakes.github.io/minimal-mistakes/about/
   - title: "Tools"
     url: /year-archive/
-  - title: "Autre"
-    url: /collection-archive/
   - title: "Windows Process"
     url: /docs/quick-start-guide/
+  - title: "Autre"
+    url: /collection-archive/
+
 
