@@ -14,10 +14,10 @@ tags:
 
 ## Sources 
 
-  * https://cuckoo.readthedocs.io
-  * https://infosecspeakeasy.org/t/howto-build-a-cuckoo-sandbox/27
-  * https://gist.github.com/braimee/bf570a62f53f71bad1906c6e072ce993
-  * https://hatching.io/blog/cuckoo-sandbox-setup
+  * [Doc officiel](https://cuckoo.readthedocs.io)
+  * [InfoSpeakeasy](https://infosecspeakeasy.org/t/howto-build-a-cuckoo-sandbox/27)
+  * [braime](https://gist.github.com/braimee/bf570a62f53f71bad1906c6e072ce993)
+  * [hatching.io](https://hatching.io/blog/cuckoo-sandbox-setup)
 
 
 
@@ -26,7 +26,7 @@ tags:
 Cuckoo est encore en cours de développement et comporte donc des bugs.
 De plus il est écrit en python2 ce qui provoque des conflits avec les dépendences, non suportées etc.
 
-Il arrive que sur deux installations identiques des problèmes différents apparaisent.
+Il arrive que sur deux installations identiques des problèmes différents apparaissent.
 Il est donc possible que vous ayez à résoudre des problèmes même en suivant ce guide.
 
 Correction des fautes d'orthographe : **En COURS**
