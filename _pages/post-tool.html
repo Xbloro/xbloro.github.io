@@ -3,7 +3,7 @@ layout: archive
 title: "Tools"
 permalink: /post-tool/
 author_profile: true
-feature_row:
+feature_row_cuckoo:
   - image_path: /assets/images/cuckoo.png
     alt: "cuckoo logo"
     title: "cuckoo"
@@ -11,9 +11,18 @@ feature_row:
     url: "https://xbloro.github.io/tool/guide_for_cuckoo/"
     btn_label: "Read More"
     btn_class: "btn--primary"
+feature_row_dfirtools:
+  - image_path: /assets/images/sysinternals.jpg
+    alt: "Tools"
+    title: "Must have tools"
+    excerpt: "Must have tool on a DFIR"
+    url: "https://xbloro.github.io/tool/must_have_tools/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 ---
 
-{% include feature_row id="feature_row" type="center" %}
+{% include feature_row id="feature_row_cuckoo" type="center" %}
+{% include feature_row id="feature_row_dfirtools" type="center" %}
 
 {% for post in site.toolls limit: 5 %}
   {% include archive-single.html %}
