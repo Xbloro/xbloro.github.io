@@ -5,9 +5,9 @@ main:
   - title: "Tools"
     url : /post-tool/
   - title: "Windows Process"
-    url: /post-tool/
+    url: /post-winproc/
   - title: "Autre"
-    url: /categories/
+    url: /post-autre/
   - title: "Tous les posts"
     url: /categories/
 
