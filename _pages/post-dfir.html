@@ -3,17 +3,8 @@ layout: archive
 title: "DFIR"
 permalink: /post-dfir/
 author_profile: true
-feature_row:
-  - image_path: /assets/images/cuckoo.png
-    alt: "cuckoo logo"
-    title: "cuckoo"
-    excerpt: "Quick guide to install cuckoo"
-    url: "https://xbloro.github.io/tool/guide_for_cuckoo/"
-    btn_label: "Read More"
-    btn_class: "btn--primary"
 ---
 
-{% include feature_row id="feature_row" type="center" %}
 
 {% for post in site.dfir limit: 5 %}
   {% include archive-single.html %}
