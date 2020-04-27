@@ -11,7 +11,7 @@ tags:
 # Ce document est en cours de révisions 
 
 
-# Méthodologie d'analyse Inforensique Windows
+# Méthodologie d'analyse en DEAD forensic sous Windows
 
 Ce document détaille quelques procédures et éléments intéressants lors d'une investigation forensique Windows.
 N'hésitez pas à me donner votre avis ou me dire si j'ai fait des erreurs. 
@@ -42,7 +42,7 @@ Au cours d'une investigation acquisition des données est cruciale ! En effet l'
 
 
   1.1 Dump de la R.A.M et récupération d'informations machine
-  -
+  ---
 
 Vous êtes arrivés devant la machine cible mais que faire?
 Nous allons essayer de collecter le plus d'informations possible, R.A.M, profile machine, profil réseau, table arp, etc.
@@ -115,7 +115,7 @@ Avec l'accord (et oui toujours) de la SSI on éteint la machine et on prend les 
 
 Sur le tableau il faut choisir un format accepté comme l'EWF (E0), notez que le format ISO n'est pas recevable.  
 On branche notre média amovible, on branche le/les disque(s) sources et on s'arme de patience, car c'est long...  trèèèès long.  
-N'oubliez pas de faire la vérification des données copiée, le tableau propose l'option en général.
+N'oubliez pas de faire la vérification des données copiées, le tableau propose l'option en général.
 
 Si jamais vous n'avez pas de tableau ou même un simple bloqueur. Vous pouvez utiliser une distribution qui va bloquer en écriture ses ports USB etc. (coucou [tsurugi linux](https://tsurugi-linux.org/ "tsurugi linux") ).  
 Des outils comme [FTK imager](https://accessdata.com/product-download/ftk-imager-version-4-2-0 "ftk imager") ou [EWF Toolkit](https://github.com/libyal/libewf "ewf toolkit") permettent de faire une copie EWF.  
@@ -124,7 +124,7 @@ Ce n'est donc pas une méthode à employer mais cela pourra surement vous être 
 
 
 Quelques informations à récupérer qui vous seront très utiles par la suite : 
-- Un schéma réseau et de l'architecture de l'entreprise (avec les IP etc.);
+- Un schéma réseau et de l'architecture de l'entreprise (avec les IP etc..);
 - La politique de sécurité SSI de l'entreprise;
 - Les autorisations de la session du poste incriminé;
 - Si possible les horaires de travail de l'utilisateur;
@@ -312,7 +312,7 @@ Pour tout ce qui est Autorun, injection de commande et programme :
 | description | Clé |
 |------------------------------- | -------------------------------------------------------------------------------|
 | Liste des entrées dans l'invité "RUN" |  HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU  |
-| Les autorun | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run |
+| Les autoruns | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run |
 
 | Les services lancés automatiquement |
 |------------------------------- |
