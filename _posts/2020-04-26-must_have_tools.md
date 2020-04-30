@@ -10,9 +10,7 @@ tags:
 
 ---
 
-# curently editing 
-
-# Tool you must have in a DFIR on Windows
+# Tool you must have in a live DFIR on Windows
 
 When investigating on a Windows system, their is a lot of things to check. Furthermore, in real condition, their are lot of machine to check and this can take you a lot of time.
 
@@ -22,7 +20,11 @@ Some tools are very helpful and can save you a lot of time.
 
 You 'll find a non exhaustive list of must have tools below. In every DFIR, i have them ready on an USB key.
 
-I suggest that you rename them to be able to recognize them directly when investigating
+I suggest that you rename them to be able to recognize them directly when investigating. 
+
+---
+
+
 
 ## SysInternal
 
@@ -42,25 +44,47 @@ Be sure to look at Service, Drivers(for rootkit), Logon,
 
 Their is a console mode name autorunsc that let you check process on virusTotal.
 
-### TCPVIEW
+[alt text](/assets/images/autoruns.png?raw=true "Autoruns")  
+
+### TCPView
 
 Get all TCP connection, pretty useful when looking for a connection to a CNC.
+
+[alt text](/assets/images/tcpview.png?raw=true "TCPView")  
 
 ### Process Explorer
 
 *Process Explorer* shows you information about which handles and DLLs processes have opened or loaded.
 
- It can create memory dump of a process that can be debug or RE.
+It can create memory dump of a process that can be debug or RE.
+
+[alt text](/assets/images/psexplo.png?raw=true "ProcessExplorer")  
 
 ### Process Monitor
 
+[alt text](/assets/images/procmon.png?raw=true "ProcessMonitor")  
+
 *Process Monitor* is an advanced monitoring tool for Windows that shows real-time file system, Registry and process/thread activity
+
+
+
+---
+
+## Nirsoft
+
+Nirsoft produce nice dfir tool, you can [find theme here](https://www.nirsoft.net/utils/index.html)
 
 ### Last Activity View
 
 Let you see the last activity made on the machine.
 
-## The SleuthKit
+---
+
+
+
+## The SleuthKit 
+
+[Get it there](https://www.sleuthkit.org/)
 
 ### Mactime
 
@@ -72,10 +96,45 @@ This is very helpful to look for compromised file.
 
 A Mactime parser that create more friendly view in CSV.
 
+[alt text](/assets/images/tsk.png?raw=true "tsk")  
+
+---
+
+## REDLINE
+
+[Dowload it](https://www.fireeye.com/services/freeware/redline.html) (you have to take a survey first)
+
+Very powerfull dead forensic tool. It allows you to create a payload to gather useful data (memory dump, ioc search, system info and more). 
+
+Be sure to get a payload ready on your USB KEY.
+
+[alt text](/assets/images/payload1.png?raw=true "Payload")  
+
+---
+
+## Other 
+
+### Loki
+
+A tool to look for IOC >> [here](https://github.com/Neo23x0/Loki)
+
+Be careful with signatures, some AV can flag them.
+
+[alt text](/assets/images/loki.png?raw=true "loki")  
+
 ### AMCACHE Parser
+
+[Made by Eric Zimmerman](https://github.com/EricZimmerman/AmcacheParser)
 
 Let you get the content of the Amcache witch list program's installation details.
 
+You can find [here](https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf) a very nice article about it and how to get useful informations from it.
+
 ### RegRipper
 
-A registry Key parser.
+find it [there](https://github.com/keydet89/RegRipper2.8)
+
+A registry Key parser. Some advices about it >> [here](https://tools.kali.org/forensics/regripper)
+
+---
+
