@@ -44,13 +44,13 @@ Be sure to look at Service, Drivers(for rootkit), Logon,
 
 Their is a console mode name autorunsc that let you check process on virusTotal.
 
-[alt text](/assets/images/autoruns.png?raw=true "Autoruns")  
+![alt text](/assets/images/autoruns.png?raw=true "Autoruns")  
 
 ### TCPView
 
 Get all TCP connection, pretty useful when looking for a connection to a CNC.
 
-[alt text](/assets/images/tcpview.png?raw=true "TCPView")  
+![alt text](/assets/images/tcpview.png?raw=true "TCPView")  
 
 ### Process Explorer
 
@@ -58,11 +58,11 @@ Get all TCP connection, pretty useful when looking for a connection to a CNC.
 
 It can create memory dump of a process that can be debug or RE.
 
-[alt text](/assets/images/psexplo.png?raw=true "ProcessExplorer")  
+![alt text](/assets/images/psexplo.png?raw=true "ProcessExplorer")  
 
 ### Process Monitor
 
-[alt text](/assets/images/procmon.png?raw=true "ProcessMonitor")  
+![alt text](/assets/images/procmon.png?raw=true "ProcessMonitor")  
 
 *Process Monitor* is an advanced monitoring tool for Windows that shows real-time file system, Registry and process/thread activity
 
@@ -96,7 +96,7 @@ This is very helpful to look for compromised file.
 
 A Mactime parser that create more friendly view in CSV.
 
-[alt text](/assets/images/tsk.png?raw=true "tsk")  
+![alt text](/assets/images/tsk.png?raw=true "tsk")  
 
 ---
 
@@ -108,7 +108,7 @@ Very powerfull dead forensic tool. It allows you to create a payload to gather u
 
 Be sure to get a payload ready on your USB KEY.
 
-[alt text](/assets/images/payload1.png?raw=true "Payload")  
+![alt text](/assets/images/payload1.png?raw=true "Payload")  
 
 ---
 
@@ -120,7 +120,7 @@ A tool to look for IOC >> [here](https://github.com/Neo23x0/Loki)
 
 Be careful with signatures, some AV can flag them.
 
-[alt text](/assets/images/loki.png?raw=true "loki")  
+![alt text](/assets/images/loki.png?raw=true "loki")  
 
 ### AMCACHE Parser
 
