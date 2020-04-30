@@ -112,6 +112,16 @@ Be sure to get a payload ready on your USB KEY.
 
 ---
 
+## Live OS
+
+I don't like to use liveOperating system in DFIR because you have to shutdown the guest. However it can be useful sometimes.
+
+Tsurugi is a debian based system made for forensic [get it there ](https://tsurugi-linux.org/)
+
+Kali that i don't need to present [here it is](https://www.kali.org/)
+
+![alt text](/assets/images/tsu.png?raw=true "Tsurugi")  
+
 ## Other 
 
 ### Loki
