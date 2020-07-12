@@ -4,8 +4,8 @@ main:
     url: /post-dfir/
   - title: "Tools"
     url : /post-tool/
-  - title: "Windows Process"
-    url: /post-winproc/
+  - title: "Writups HackTheBox"
+    url: /Wu-HTB/
   - title: "Autre"
     url: /post-autre/
   - title: "Tous les posts"
