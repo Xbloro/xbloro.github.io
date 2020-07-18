@@ -3,8 +3,16 @@ layout: archive
 title: "Hack The Box"
 permalink: /post-HTB/
 author_profile: true
+feature_row_lame:
+  - image_path: assets/images/bashed/Bashed.webp
+    alt: "bashed"
+    title: "HTB: Lame"
+    excerpt: "little writup"
+    url: "https://xbloro.github.io/hack%20the%20box/Wu-Lame/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
 feature_row_bashed:
-  - image_path: assets/images/Bashed.webp
+  - image_path: assets/images/lame/lame.webp
     alt: "bashed"
     title: "HTB: BASHED"
     excerpt: "little writup"
@@ -16,4 +24,5 @@ feature_row_bashed:
   {% include archive-single.html %}
 {% endfor %}
 
+{% include feature_row id="feature_row_lame" type="center" %}
 {% include feature_row id="feature_row_bashed" type="center" %}
