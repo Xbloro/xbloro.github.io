@@ -1,4 +1,5 @@
 ---
+
 title: "Windows DFIR methodo "
 
 categories:
@@ -10,19 +11,19 @@ tags:
 
 # Ce document est en cours de révisions 
 
+j'essaie de corriger les fautes d'orthographe au max.
 
-# Méthodologie d'analyse en Live/DEAD forensique sous Windows
 
-Ce document détaille quelques procédures et éléments intéressants lors d'une investigation dead  forensique Windows.
+# Piste de recherche en Live/DEAD forensique sous Windows
+
+Ce document détaille quelques procédures et éléments intéressants lors d'une investigation live/ dead forensique Windows.
 N'hésitez pas à me donner votre avis ou me dire si j'ai fait des erreurs. 
-Si vous avez des questions n'hésitez pas sur twitter : https://twitter.com/HHUG0
+Si vous avez des questions n'hésitez pas sur [twitter](https://tw.itter.com/HHUG0 "twitter").
 
 # Disclamer
 
 Le but de ce document est de présenter une méthodologie ainsi que certains aspects de Windows qui pourront être utiles lors d'une investigation.
 Ce document n'est pas exhaustif, en fonction de votre entreprise, expérience, cas traité et évolution des technologies, les procédures peuvent être complètements différentes. 
-
-
 
 # Introduction
 
@@ -37,10 +38,10 @@ Il existe deux types d'enquêtes, l'enquête dite administrative et l'enquête j
 
 La principale différence entre les deux est la préservation obligatoire de l'intégrité des preuves pour qu'elle soit juridiquement recevables.
 
-# 1 Acquisition des médias (en DEAD uniquement)
+# Préparation pour l'investigation en DEAD
 
-1. 1Acquisition des disques  
-   -
+## 1  Acquisition des disques  
+-
 
 Prévoyez une bonne quantité de stockage car on va récupérer tout le contenu des disques présent dans la machine cible.  
 
@@ -70,9 +71,6 @@ Quelques informations à récupérer qui vous seront très utiles par la suite :
 - La liste des accès réseau et aux applications de l'utilisateur.
 
 
-# 2 Investigation 
-
-
 Avant toute chose il faut faire des copies de toutes les données que nous avons récupéré précédemment.  
 En effet si vous travaillez directement sur les données et que vous faites une bêtise, il faudra à nouveau faire l'acquisition dans l'entreprise. De même si le support de stockage plante et que vous perdez tout ...
 
@@ -93,7 +91,7 @@ Ca en fait hein ? Mais bon on est jamais trop prudent et croyez moi une erreur a
 
 
 
-2.1 Préparation d'un environnement de travail (DEAD)
+## 2 Préparation d'un environnement de travail 
 -
 
 Au cours de cet article nous utiliserons Windows mais libre à vous de choisir votre environnement préféré.
@@ -108,44 +106,9 @@ Si vous avez beaucoup d'argent vous pouvez en choisir un autre comme Encase ou M
 
 On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "regripper").
 
-On est paré et on peut commencer.  
 
 
-
-2.2 Investigation LIVE or DEAD
--
-
-Voici les étapes que nous allons effectuer :  
-
-- Auditer les "autoruns" et rechercher des persistances;
-
-- Récuperer la jumplist;
-
-- Récupération des fichiers supprimés; 
-
-- Récupération du "trousseau de clé" (les clés de registre); 
-
-- Parser l'amcache;
-
-- Regarder les "last activity view";
-
-- Parser l'usnjournal;
-
-- Rechercher les supports amovibles;
-
-- Rechercher des fichiers suspect (fichier lnk); 
-
-- récupération des logs;
-
-- récupération des shadows copie;
-
-- Faire une fls;
-
-- Parser la mft;
-
-  
-
-2.2.1 Autopsy
+## 3 Petit point Autopsy 
 -
 
 On lance Autopsy.
@@ -198,20 +161,63 @@ Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouve
 
 Maintenant , vous savez comment rechercher et récupérer des fichiers.
 
-2.2 Autoruns et persistances : 
+# Investigation LIVE or DEAD
+-
+
+Que ce soit en live or DEAD les taches suivantes sont clés.
+
+Voici les étapes que nous allons effectuer :  
+
+- Auditer les "autoruns" et rechercher des persistances;
+
+- Récuperer la jumplist;
+
+- Récupération des fichiers supprimés; 
+
+- Récupération du "trousseau de clé" (les clés de registre); 
+
+- Parser l'amcache;
+
+- Regarder les "last activity view";
+
+- Parser l'usnjournal;
+
+- Rechercher les supports amovibles;
+
+- Rechercher des fichiers suspect (fichier lnk); 
+
+- récupération des logs;
+
+- récupération des shadows copie;
+
+- Faire une fls;
+
+- Parser la mft;
+
+  
+
+
+## 1 Autoruns et persistances : 
 
 En cas de compromission d'une machine, il est important de rechercher une backdoor car elle permet de récupérer des informations sur l'attaquant mais aussi de lui couper ses accès.
 
 Les persistances sont majoritairement créé grâce à un(e) :
 
 - entrée dans la clé run
+
 - tâche planifiée
+
 - service
+
 - requête wmi
+
 - injection DLL
+
 - driver malveillant
 
-2.2.1 la clé RUN :  
+  
+
+### 1.1 la clé RUN :  
 
 | description                           | Clé                                                          |
 | ------------------------------------- | ------------------------------------------------------------ |
@@ -220,16 +226,20 @@ Les persistances sont majoritairement créé grâce à un(e) :
 
 Il suffit de vérifier la malveillance des binaires présent dans les entrés.
 
-2.2.2 Les tâches planifiées : 
+
+
+### 1.2 Les tâches planifiées : 
 
 On peut les récupérer avec PowerShell : 
 ```powershell
-SchTasks 
+SchTasks.exe
 ```
 
 ![alt text](/assets/images/schtasks.png?raw=true "tasks")
 
-2.2.3 Les services 
+
+
+### 1.3 Les services 
 
 On peut les récupérer avec PowerShell : 
 
@@ -239,7 +249,9 @@ Get-Service
 
 ![alt text](/assets/images/services.png?raw=true "tasks")
 
-2.2.4 Les requêtes wmi
+
+
+### 1.4 Les requêtes wmi
 
 Idem avec Powershell
 
@@ -249,13 +261,116 @@ Get-WmiObject -Class __EventFilter -Namespace root\subscription
 Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 ```
 
-2.2.5 Drivers et autres : 
+
+
+### 1.5 Drivers et autres : 
 
 Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique : 
 
 ![alt text](/assets/images/autoruns.png?raw=true "tasks")
 
-2.3 Le trousseau de clés
+
+
+## 2 Fichiers et timeline
+
+
+
+### 2.1 Eléments supprimés
+
+On peut les récupérer comme vue avec Autopsy, si non [PhotoRec](https://www.cgsecurity.org/wiki/PhotoRec "PhotoRec")  marche très bien.
+
+
+
+### 2.2 Fichiers intéressants
+
+Vous êtes parfois  amener à chercher des fichiers (IOC etc.)
+
+Un petit One Liner Powershell pour faire une recherche récursive
+
+```powershell
+dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
+```
+
+Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3 "attaques").
+
+
+
+### 2.3 Parser la MFT
+
+Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
+
+Voici une [lib](https://sourceforge.net/projects/ntfsreader/ '"librairie ") c# qui marche très bien.
+
+
+
+### 2.4 Parser l'Amcache
+
+> L’AmCache est une base de données spécifiques à Windows 7, 8 et 10 et leurs équivalents serveurs, qui consigne des métadonnées portant sur l’exécution de binaires et l’installation de programmes sur un système. Méconnue et objet de recherches insuffisantes, cette base constitue un artefact sous-exploité dans le cadre des investigations numériques.
+
+ Un petit papier de l'anssi [ici](https://www.ssi.gouv.fr/agence/publication/analyse-de-lamcache/ "ici")
+
+Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser "ici"), fait par Eric ZIMMERMAN un des Dev de autopsy, je recommande vraiment d'aller voir son travail.
+
+
+
+### 2.5 Faire une FLS
+
+La FLS permet, d'établir une timeline de modification des fichiers, à l'instar du parsing de la mft vu précédment.
+
+TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls '"ici").
+
+
+
+### 2.6 Jumplist
+
+La jumpList contient les fichiers récent ouvert par des applications ou l'utilisateur , elle se trouve ici :
+
+```
+Nom de l'user +"\\AppData\\Roaming\\Microsoft\\Windows\\Recent"; 
+```
+
+
+
+### 2.7 Last Activity view
+
+Last activity view est un tool bien pratique de nirsoft accessible [ici](https://www.nirsoft.net/utils/computer_activity_view.html "ici")
+
+Il permet, comme son nom l'indique de voir les dernières activités faites sur l'ordinateur.
+
+
+
+## 3 Matériel et autre
+
+
+
+### 3.1 Clés usb : 
+
+Pour lister les clés branchées au moins une fois sur la machine : 
+
+```Powershell
+Get-ItemProperty -ErrorAction SilentlyContinue -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*\*
+```
+
+
+
+Vous pouvez lister les éléments ci-dessous en changeant le path de la commande :
+
+```powershell
+Get-ItemProperty -ErrorAction SilentlyContinue -Path clé-de-reg-ici
+```
+
+
+
+| description                              | Clé                                                          |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| Les disques montés                       | HKLM\SYSTEM\MountedDevices                                   |
+| Un autre endroit pour les disques montés | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\CPCVolume |
+| Les disques réseau                       | HKCU\Software\Microsoft\Windows\Current\VersionExplorer\MountPoints2 |
+| les clés USB montée                      | HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR                   |
+
+# Informations utiles 
+
+## 1 Le trousseau de clés
 
 -
 Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre .
@@ -274,7 +389,7 @@ Voici toutes les clés, on va essayer d'expliquer un petit peu à quoi elles ser
 | Registre | localisation|
 |------------------------------- | ----------------------------|
 | HKEY_USERS |  \Documents and Setting\User Profile\NTUSER.DAT |
-| HKEY_USERS\DEFAULT | C:\Windows\system32\config\default  |
+| HKEY_USERS\DEFAULT | C(:\Windows\system32\config\default |
 | HKEY_LOCAL_MACHINE\SAM | C:\Windows\system32\config\SAM  |
 | HKEY_LOCAL_MACHINE\SECURITY | C:\Windows\system32\config\SECURITY  |
 | HKEY_LOCAL_MACHINE\SOFTWARE | C:\Windows\system32\config\software |
@@ -376,7 +491,7 @@ Vous êtes encore la? allez encore une !
 
 
 
-2.4 L'investigations des journaux (LOG)
+## 2 L'investigations des journaux (LOG)
 -
 
 Les logs sont ici : C:\Windows\System32\winevt\log\
@@ -432,9 +547,7 @@ Des infos de connexion :
 
 
 
-
-
-3 Analyse et Rapport
+# 3 Analyse et Rapport
 -
 
 Il faut donc faire la synthèse de tous les éléments trouvés et essayer d'en tirer des conclusions. C'est la partie la plus difficile  mais elle est nécessaire.  
@@ -443,9 +556,7 @@ Il n'y a pas de technique ici, pensez que c'est comme une analyse de texte au ba
 N'oubliez pas, l'analyse permet de tirer des conclusions  grâce aux éléments trouvés lors de l'investigation.
 Elle doit être présente et justifiée dans le rapport que vous allez rendre à votre client.
 
-
-
-4 Conclusion
+# 4  Conclusion
 -
 
 Nous voila arrivé à la fin, j'espère que cela aura pu vous être utile. Notez que cette méthodologie ne couvre pas tout ! Si vous voyez des erreurs ou des choses à rajouter n'hésitez pas pour qu'on puisse améliorer au maximum cet article.
