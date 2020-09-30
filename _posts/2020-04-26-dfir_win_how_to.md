@@ -11,116 +11,54 @@ tags:
 # Ce document est en cours de révisions 
 
 
-# Méthodologie d'analyse en DEAD forensic sous Windows
+# Méthodologie d'analyse en Live/DEAD forensique sous Windows
 
-Ce document détaille quelques procédures et éléments intéressants lors d'une investigation forensique Windows.
+Ce document détaille quelques procédures et éléments intéressants lors d'une investigation dead  forensique Windows.
 N'hésitez pas à me donner votre avis ou me dire si j'ai fait des erreurs. 
 Si vous avez des questions n'hésitez pas sur twitter : https://twitter.com/HHUG0
 
 # Disclamer
 
-Le but de ce document est de présenter UNE méthodologie ainsi que certains aspects de Windows qui pourront être utiles lors d'une investigation.
-Ce document n'est pas exhaustif, en fonction de votre entreprise, expérience, cas traité et évolution des technologies, les procédures peuvent être complètements différentes.
-
-Ce document n'est pas orienté CTF mais plutôt cas réel.  
+Le but de ce document est de présenter une méthodologie ainsi que certains aspects de Windows qui pourront être utiles lors d'une investigation.
+Ce document n'est pas exhaustif, en fonction de votre entreprise, expérience, cas traité et évolution des technologies, les procédures peuvent être complètements différentes. 
 
 
 
 # Introduction
 
-
-Cet article est destiné aux débutants. Cependant une connaissance de base du fonctionnement de Windows est recommandée.
-
 Quand un attaquant pénètre dans un système, il laisse toujours des traces de son passage. Dans cet article nous allons étudier les mécanismes de Windows afin de trouver des "preuves". Par la suite nous allons essayer de construire une timeline du déroulement de l'attaque.
 Nous verrons en première partie quelques principes d'acquisition des médias puis nous passerons à l'investigation.
 
-# 1 Acquisition des médias
 
 
-Au cours d'une investigation acquisition des données est cruciale ! En effet l'intégrité des données doit être respectée afin que les "preuves" trouvées soient crédibles et recevables.
+## Les types d'enquêtes
 
+Il existe deux types d'enquêtes, l'enquête dite administrative et l'enquête judiciaire. Seul un officier de police judiciaire est habilité à faire une enquête du même nom. On se concentrera donc sur l'enquête administrative.
 
+La principale différence entre les deux est la préservation obligatoire de l'intégrité des preuves pour qu'elle soit juridiquement recevables.
 
-  1.1 Dump de la R.A.M et récupération d'informations machine
-  ---
+# 1 Acquisition des médias (en DEAD uniquement)
 
-Vous êtes arrivés devant la machine cible mais que faire?
-Nous allons essayer de collecter le plus d'informations possible, R.A.M, profile machine, profil réseau, table arp, etc.
+1. 1Acquisition des disques  
+   -
 
-C'est partie pour le  dump de la R.A.M.
-La R.A.M permet de récupérer beaucoup d'informations sur la machine ainsi que les processus tournant en direct.
+Prévoyez une bonne quantité de stockage car on va récupérer tout le contenu des disques présent dans la machine cible.  
 
-Pour cela nous allons utiliser l'outils Redline de FireEye : https://www.fireeye.fr/services/freeware/redline.html  
-Redline permet de récupérer le profil de la machine ainsi que des informations intéressantes en plus de la R.A.M.
-Il propose une interface graphique pour l'analyse des données.
-Si vous êtes un adepte de Volatility (et vous avez raison !), sachez que le dump est compatible.
-
-Notez qu'il existe beaucoup d'autres outils de dump mais RedLine est un des meilleurs à mon goût.
-Certains RSSI peuvent également dumper la mémoire de la machine à distance avec leur propre solution, il est donc nécessaire de se rapprocher d'eux.
-
-Le logiciel fonctionne de cette façon, vous choisissez les informations que vous souhaitez récupérer et vous créez un payload que vous déposerez sur un média amovible.
-Pourquoi? car il ne faut pas compromettre les données de la machine et donc ne rien transférer ou exécuter dessus.
-C'est pour cela que notre payload sera exécuté SUR le média amovible.
-Notez que la RAM sera déposée sur votre média amovible il faut donc que la capacité mémoire de ce dernier soit plus élevé que la RAM de la machine.
-
-Allez c'est parti, on lance RedLine !
-
-Dans le menu on nous propose 3 choix :  
--Le premier permet de récupérer des informations sur la machines (utilisateurs, profile machine, etc.) et de dumper la RAM;    
--Le second permet la même chose mais en plus de rechercher des IOCs (c'est plutôt cool);    
--Le dernier permet de rechercher ses propres IOC. (Si vous êtes dans une entreprise et que vous voulez chercher des traces d'intrusions dans toute la foret info c'est assez sympa, suffit de déployer le payload via PowerShell ;) ).  
-
-![alt text](/assets/images/menuCollecteur.png?raw=true "ChoixMenuRedline")
-
-Dans chaque cas Redline vous propose d'éditer le script du payload, pour ajouter des fonctions (récupération de string par ex) mais ici on va le laisser par défaut.
-
-On va choisir l'option numéro 2 : "Comprehensive collector" 
-
-
-![alt text](/assets/images/collecteur2.png?raw=true "ChoixN2")  
-
-
-
-Une deuxième fenêtre nous demande si on veut récupérer la mémoire de la machine, on coche la case (n1)  
-Puis on choisit l'emplacement de sauvegarde du Payload(n2) >> votre média Amovible.  
-
-<img src="/assets/images/Collecteur3.png" width="600">
-
-
-
-
-Et voila ! votre payload est prêt.  
-
-![alt text](/assets/images/payload1.png?raw=true "Payload")
-
-A présent, on branche le média amovible sur le Windows cible et on exécute le script "RunRedlineAudit.bat".
-
-Une fois l'opération terminée, un fichier "AnalysisSessionX.mans " est créé dans le répertoire de votre payload.  
-Il suffit juste de l'ouvrir avec RedLine (sur votre machine d'analyse ^^') pour pouvoir commencer à travailler.  
-Mais doucement ! L'acquisition n'est pas encore terminée, il faut maintenant faire une copie forensique de tous les disques de stockage de la machine.  
-
-1.2 Acquisition des disques  
--
-
-Prévoyez une bonne quantité de stockage car on va récupérer tout ce qu'il y a dans la machine cible.  
-
-Pour cela, le mieux (et dans le cadre d'une enquête juridique c'est obligatoire) est utiliser un tableau bloqueur-copieur.  
+Pour cela, le mieux (et dans le cadre d'une enquête judiciaire c'est obligatoire) est utiliser un tableau bloqueur-copieur.  
 C'est un équipement qui ressemble à ca :  
 
 <img src="/assets/images/td2u.jpg" width="400">
 
-Il permet de bloquer le flux en écriture vers la machine cible et d'en faire une image disque vers votre matériel. Avec ça, pas d'atteinte à l'intégrité des données.  
-Avec l'accord (et oui toujours) de la SSI on éteint la machine et on prend les disques (juste le temps de les copier hein après il faut les rendre !). Nous avons éteint la machine pour copier les disques afin d'éviter une compromission des "preuves"  
-(quoi encore ? et oui il faut être prudent).
+Il permet de bloquer le flux en écriture vers la machine cible et d'en faire une image disque vers votre matériel.
 
-Sur le tableau il faut choisir un format accepté comme l'EWF (E0), notez que le format ISO n'est pas recevable.  
-On branche notre média amovible, on branche le/les disque(s) sources et on s'arme de patience, car c'est long...  trèèèès long.  
-N'oubliez pas de faire la vérification des données copiées, le tableau propose l'option en général.
+Avec l'accord  de la SSI on éteint la machine et on prend les disques (juste le temps de les copier hein après il faut les rendre !).
+
+Sur le tableau il faut choisir un format  comme l'EWF (E0) ou iso.
+On branche notre média amovible, on branche le/les disque(s) sources et on s'arme de patience, car c'est long...  très long.  
+N'oubliez pas de faire la vérification des données copiées, le tableau propose l'option en général (md5, sha1...).
 
 Si jamais vous n'avez pas de tableau ou même un simple bloqueur. Vous pouvez utiliser une distribution qui va bloquer en écriture ses ports USB etc. (coucou [tsurugi linux](https://tsurugi-linux.org/ "tsurugi linux") ).  
 Des outils comme [FTK imager](https://accessdata.com/product-download/ftk-imager-version-4-2-0 "ftk imager") ou [EWF Toolkit](https://github.com/libyal/libewf "ewf toolkit") permettent de faire une copie EWF.  
-Attention cependant sans tableau ou bloqueur, la recevabilité des preuves peut être compromise.  
-Ce n'est donc pas une méthode à employer mais cela pourra surement vous être utile.  
 
 
 Quelques informations à récupérer qui vous seront très utiles par la suite : 
@@ -134,8 +72,7 @@ Quelques informations à récupérer qui vous seront très utiles par la suite :
 
 # 2 Investigation 
 
-On a enfin fini avec acquisition ! On va pouvoir mettre les mains dans la cyber.
-Allez on est rentré dans notre laboratoire de travail et on est pressé d'investiguer, mais pas si vite !  
+
 Avant toute chose il faut faire des copies de toutes les données que nous avons récupéré précédemment.  
 En effet si vous travaillez directement sur les données et que vous faites une bêtise, il faudra à nouveau faire l'acquisition dans l'entreprise. De même si le support de stockage plante et que vous perdez tout ...
 
@@ -147,21 +84,19 @@ De même on a deux exemplaires des données stockées bien au chaud en cas de pr
 
 Pour résumer : 
 -Données originales stockées sur un disque;
+
 - 1ere Copie des données originales stockées sur un autre disque >> copie de secours;
 - 2eme Copie des données originales stockées sur un troisième disque >> model de copie de travail;
   - Copie de travail des données depuis la copie n2 >> la copie sur laquelle on va investiguer.
 
 Ca en fait hein ? Mais bon on est jamais trop prudent et croyez moi une erreur arrive vite.
 
-2.1 Préparation d'un environnement de travail
+
+
+2.1 Préparation d'un environnement de travail (DEAD)
 -
 
-On arrive dans une partie moins ludique ou on va voir des outils et des pistes de recherches.
-Chaque investigation étant unique il faudra adapter vos recherches en fonction des éléments que vous allez découvrir.
-
-Qui de mieux que Windows peut s'occuper de votre Windows ?  
-Linux ?  
-Perdu ! enfin ça dépend de vous mais au cours de cet article nous utiliserons Windows car il comprend des outils utiles et inexistants sous Linux.
+Au cours de cet article nous utiliserons Windows mais libre à vous de choisir votre environnement préféré.
 
 Attention cependant vous allez être amené à travailler sur un environnement possiblement infecté et il faut prendre les précautions adaptées.
 
@@ -171,28 +106,49 @@ On oublie pas de bien cloisonner la machine pour éviter toute fuite par le rés
 Dans le cadre de l'investigation nous allons utiliser [Autopsy](https://www.sleuthkit.org/autopsy/ "Autopsy") car c'est un outils très complet, reconnu et distribué gratuitement.  
 Si vous avez beaucoup d'argent vous pouvez en choisir un autre comme Encase ou Magnet.
 
-On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "regripper") et puis bien évidement RedLine.
+On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "regripper").
 
 On est paré et on peut commencer.  
 
 
 
-2.2 Primo Investigation
+2.2 Investigation LIVE or DEAD
 -
 
-La primo investigation consiste à faire l'état des lieux de la machine.
+Voici les étapes que nous allons effectuer :  
 
-Voici les étapes que nous allons effectuer :   
--récupération des fichiers supprimés;  
--On analyse un peu les fichiers présent (Fichier Word suspect ? un fichier mdp sur le bureau ? on y reviendra plus tard);  
--récupération du "trousseau de clé" (les clés de registre);  
--récupération des logs;
--récupération des shadows copie.
+- Auditer les "autoruns" et rechercher des persistances;
+
+- Récuperer la jumplist;
+
+- Récupération des fichiers supprimés; 
+
+- Récupération du "trousseau de clé" (les clés de registre); 
+
+- Parser l'amcache;
+
+- Regarder les "last activity view";
+
+- Parser l'usnjournal;
+
+- Rechercher les supports amovibles;
+
+- Rechercher des fichiers suspect (fichier lnk); 
+
+- récupération des logs;
+
+- récupération des shadows copie;
+
+- Faire une fls;
+
+- Parser la mft;
+
+  
 
 2.2.1 Autopsy
 -
 
-Allez c'est partit, on lance Autopsy ! 
+On lance Autopsy.
 
 Dans un premier temps il va vous demander les informations sur l'affaire, essayez de les remplir correctement, surtout si vous travaillez à plusieurs.
 
@@ -207,14 +163,13 @@ Il va vous demander ensuite ce que vous voulez récupérer sur l'image disque. O
 
 ![alt text](/assets/images/AutCheck.png?raw=true "Check")  
 
-Allez maintenant on peut allé se chercher un café car c'est long, très long...   
-Plus c'est gros, plus c'est l.. heuu ah oui le café  
+Allez maintenant on peut allé se chercher un thé car c'est long.
 
 ![alt text](/assets/images/AutLoad.png?raw=true "load")  
 
-En attendant que le traitement soit fini, on va se familiariser avec l'interface de notre nouveau meilleur amie.
+En attendant que le traitement soit fini, on va se familiariser avec l'interface.
 
-Sur la partie gauche vous avez une arborescence. En haut on a la première partie qui nous permet de voir le contenu du disque de la même façon que quand il est  monté sur la machine hôte. C'est à partir de cet emplacement que vous allez pouvoir naviguer dans l'arborescence de la machine pour récupérer les logs ainsi que le trousseau de clés !
+Sur la partie gauche vous avez une arborescence. En haut on a la première partie qui nous permet de voir le contenu du disque de la même façon que quand il est  monté sur la machine hôte. C'est à partir de cet emplacement que vous allez pouvoir naviguer dans l'arborescence de la machine pour récupérer les logs ainsi que le trousseau de clés par exemple.
 
 
 ![alt text](/assets/images/AutSource.png?raw=true "Source")  
@@ -223,24 +178,87 @@ Pour exporter un fichier rien de plus simple, il suffit de cliquer droit et expo
 
 ![alt text](/assets/images/AutExport.png?raw=true "Export")
 
-Attention cependant, si vous exportez un fichier malveillant, dropez le dans un fichier inaccessible par votre antivirus car il risquerait de le compromettre. je vous conseille de le zippe(avec mdp) pour éviter de cliquer dessus sans faire exprès !
+Attention cependant, si vous exportez un fichier malveillant, dropez le dans un fichier inaccessible par votre antivirus car il risquerait de le supprimer. je vous conseille de le zipper(avec mdp) pour éviter de cliquer dessus sans faire exprès. En général on change l'extension du fichier en le renommant.
 
+Ensuite arrive la partie "View" qui trie les fichiers par type etc. 
 
-Ensuite arrive la partie View qui trie les fichiers par type etc. C'est aussi la que la partie CARVING est accessible. Souvenez vous dans la méthodologie la recherche dans les fichiers supprimés, ça se passe ici !
+C'est aussi la que la partie "CARVING" est accessible afin de rechercher les fichiers supprimés.
 
 
 ![alt text](/assets/images/AutView.png?raw=true "view")
 
-Enfin on a la partie Results qui permet de voir des éléments intéressants, je vous laisse regarder.
-La partie Exif permet accéder rapidement aux photos et à leur emplacement.
-Par exemple, si vous trouvez une image pornographique (oui oui ca arrive), et que vous voyez qu'elle était à l'origine dans un PowerPoint... Vous savez quoi faire ! (pour ceux qui savent pas, on va rechercher des macros malveillantes dans le ppt)
+Enfin on a la partie "Results" qui permet de voir des éléments intéressants, je vous laisse regarder.
+La partie "Exif" permet accéder rapidement aux photos et à leurs emplacements. 
 
+Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouvez facilement trouver son origine (powerpoint > macro malveillante etc.).
 
 ![alt text](/assets/images/AutRes.png?raw=true "res")
 
+
+
+Maintenant , vous savez comment rechercher et récupérer des fichiers.
+
+2.2 Autoruns et persistances : 
+
+En cas de compromission d'une machine, il est important de rechercher une backdoor car elle permet de récupérer des informations sur l'attaquant mais aussi de lui couper ses accès.
+
+Les persistances sont majoritairement créé grâce à un(e) :
+
+- entrée dans la clé run
+- tâche planifiée
+- service
+- requête wmi
+- injection DLL
+- driver malveillant
+
+2.2.1 la clé RUN :  
+
+| description                           | Clé                                                          |
+| ------------------------------------- | ------------------------------------------------------------ |
+| Liste des entrées dans l'invité "RUN" | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU |
+| Les autoruns                          | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run           |
+
+Il suffit de vérifier la malveillance des binaires présent dans les entrés.
+
+2.2.2 Les tâches planifiées : 
+
+On peut les récupérer avec PowerShell : 
+```powershell
+SchTasks 
+```
+
+![alt text](/assets/images/schtasks.png?raw=true "tasks")
+
+2.2.3 Les services 
+
+On peut les récupérer avec PowerShell : 
+
+```powershell
+Get-Service 
+```
+
+![alt text](/assets/images/services.png?raw=true "tasks")
+
+2.2.4 Les requêtes wmi
+
+Idem avec Powershell
+
+```powershell
+Get-WmiObject -Class __FilterToConsumerBinding -Namespace root\subscription
+Get-WmiObject -Class __EventFilter -Namespace root\subscription
+Get-WmiObject -Class __EventConsumer -Namespace root\subscription
+```
+
+2.2.5 Drivers et autres : 
+
+Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique : 
+
+![alt text](/assets/images/autoruns.png?raw=true "tasks")
+
 2.3 Le trousseau de clés
+
 -
-Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre et pourquoi elles sont si importantes.
+Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre .
 
 Le dictionnaire de l'informatique Microsoft (Microsoft Computer Dictionary), cinquième édition, définit le Registre comme :
 une base de données hiérarchique centrale, permettant de stocker les informations qui sont nécessaires pour configurer le système pour un ou plusieurs utilisateurs, programmes et périphériques matériels.
@@ -249,9 +267,7 @@ Lors de son exécution, Windows consulte en permanence les informations contenue
 
 Une ruche du Registre est un groupe de clés, de sous-clés et de valeurs du Registre associé à un ensemble de fichiers de prise en charge qui contiennent des sauvegardes de ses données.
 
-Vous l'avez compris, les clés de registre permettent de connaitre toute la configuration de Windows et des programmes qui y sont installés.
-
-Les clés de registres sont situées ici : C:\Windows\system32\config\
+Les clés de registres sont s:ituées ici : C:\Windows\system32\config\
 
 Voici toutes les clés, on va essayer d'expliquer un petit peu à quoi elles servent.  
 
@@ -289,7 +305,7 @@ Et oui ca fait un paquet de choses à voir hein ? Allez on se décourage pas je 
 Pour avoir accès au contenue des clé vous pouvez utiliser l'utilitaire Regedit de Windows et importer les ruches.  
 Vous pouvez également utiliser regRipper, il vous donnera tout le contenu en fichier texte.
 
-Pour tout ce qui est fichier : 
+Pour tout ce qui est fichiers : 
 
 | description | Clé |
 |------------------------------- | -------------------------------------------------------------------------------|
@@ -359,11 +375,9 @@ Vous êtes encore la? allez encore une !
 | ControlSet001\Services\Tcpip\Parameters\Interfaces\ |
 
 
+
 2.4 L'investigations des journaux (LOG)
 -
-
-Ici malheureusement je n'ai pas de méthodologie à vous apporter.
-Cela va vraiment dépendre de votre cas et des éléments que vous avez trouver précédemment et le rapport fournie par l'entreprise devrait vous aiguiller.
 
 Les logs sont ici : C:\Windows\System32\winevt\log\
 Pour les ouvrir vous avez votre parseur préféré ou alors le gestionnaire d'évènements Windows qui est bien pensé.
@@ -416,22 +430,14 @@ Des infos de connexion :
 | 8 | NetworkCleartext | A user logged on to this computer from the network. The user’s password was passed to the authentication package in its unhashed form.  The built-in authentication packages all hash credentials before sending them across the network. The credentials do not traverse the network in plaintext (also called cleartext). |
 | 10| Connexion en RDP|
 
-2.5 L'analyse de la R.A.M 
--
-Ah vous l'attendiez celle la !
-Sachez que vous pouvez faire presque toute l'investigation depuis la R.A.M, en effet  quasiment tous  les éléments présentés au dessus sont disponibles.
-Vous avez accès aux clés de registre ! 
-De plus vous pouvez accéder aux processus tournant en direct, leur infos de lancement (parents, pid etc.).
-Lors de l'investigation, l'analyse de la R.A.M est fait en parallèle que celle du disque.
 
-Ici notre investigation va se baser principalement sur les processus et les connexions réseaux.
-Redline nous permet d'accéder à tout ca très facilement. Si vous préférez Volatility, je vous laisse regarder des tutoriels.
+
 
 
 3 Analyse et Rapport
 -
 
-Vous n'êtes pas dans un CTF et il n'y a pas de Flag à trouver, il faut donc faire la synthèse de tous les éléments trouvés et essayer d'en tirer des conclusions. C'est la partie la plus difficile  mais elle est nécessaire.  
+Il faut donc faire la synthèse de tous les éléments trouvés et essayer d'en tirer des conclusions. C'est la partie la plus difficile  mais elle est nécessaire.  
 Il n'y a pas de technique ici, pensez que c'est comme une analyse de texte au bac. Vous avez produit le texte avec l'investigation menée juste avant, maintenant il faut analyser ce texte. C'est une partie à ne pas négliger car elle permet de poser les choses et de réfléchir autrement. 
 
 N'oubliez pas, l'analyse permet de tirer des conclusions  grâce aux éléments trouvés lors de l'investigation.
@@ -442,8 +448,7 @@ Elle doit être présente et justifiée dans le rapport que vous allez rendre à
 4 Conclusion
 -
 
-Nous voila arrivé à la fin, j'espère que cela aura pu vous être utile. Notez que cette méthodologie ne couvre pas tout car destinée aux débutants ! Si vous voyez des erreurs ou des choses à rajouter n'hésitez pas pour qu'on puisse améliorer au maximum cet article.
-Un petit cas pratique étape par étape est en cours d'écriture ;) 
+Nous voila arrivé à la fin, j'espère que cela aura pu vous être utile. Notez que cette méthodologie ne couvre pas tout ! Si vous voyez des erreurs ou des choses à rajouter n'hésitez pas pour qu'on puisse améliorer au maximum cet article.
 
 
 
