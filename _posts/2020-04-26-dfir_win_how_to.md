@@ -178,6 +178,10 @@ Voici les étapes que nous allons effectuer :
 
 - Parser l'amcache;
 
+- Parser le Shimcache;
+
+- Parser le Ntuser.dat;
+
 - Regarder les "last activity view";
 
 - Parser l'usnjournal;
