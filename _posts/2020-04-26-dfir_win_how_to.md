@@ -309,7 +309,7 @@ Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qu
 
  Un petit papier de l'anssi [ici](https://www.ssi.gouv.fr/agence/publication/analyse-de-lamcache/ "ici")
 
-Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser "ici"), fait par Eric ZIMMERMAN un des Dev de autopsy, je recommande vraiment d'aller voir son travail.
+Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des Dev de autopsy, je recommande vraiment d'aller voir son travail.
 
 
 
@@ -317,7 +317,7 @@ Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser "ici
 
 La FLS permet, d'établir une timeline de modification des fichiers, à l'instar du parsing de la mft vu précédment.
 
-TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls '"ici").
+TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls "ici").
 
 
 
@@ -347,7 +347,7 @@ Il permet, comme son nom l'indique de voir les dernières activités faites sur 
 
 Pour lister les clés branchées au moins une fois sur la machine : 
 
-```Powershell
+```powershell
 Get-ItemProperty -ErrorAction SilentlyContinue -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*\*
 ```
 
@@ -382,7 +382,7 @@ Lors de son exécution, Windows consulte en permanence les informations contenue
 
 Une ruche du Registre est un groupe de clés, de sous-clés et de valeurs du Registre associé à un ensemble de fichiers de prise en charge qui contiennent des sauvegardes de ses données.
 
-Les clés de registres sont s:ituées ici : C:\Windows\system32\config\
+Les clés de registres sont situées ici : C:\Windows\system32\config\
 
 Voici toutes les clés, on va essayer d'expliquer un petit peu à quoi elles servent.  
 
