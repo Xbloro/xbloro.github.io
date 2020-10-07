@@ -291,7 +291,7 @@ Un petit One Liner Powershell pour faire une recherche récursive
 dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
 ```
 
-Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3 "attaques").
+Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3  "attaques").
 
 
 
@@ -299,7 +299,7 @@ Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités l
 
 Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
 
-Voici une [lib](https://sourceforge.net/projects/ntfsreader/ '"librairie ") c# qui marche très bien.
+Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qui marche très bien.
 
 
 
