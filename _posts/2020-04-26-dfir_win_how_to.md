@@ -313,7 +313,7 @@ Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qu
 
  Un petit papier de l'anssi [ici](https://www.ssi.gouv.fr/agence/publication/analyse-de-lamcache/ "ici")
 
-Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des Dev de autopsy, je recommande vraiment d'aller voir son travail.
+Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des formateurs SANS, je recommande vraiment d'aller voir son travail.
 
 
 
