@@ -44,7 +44,7 @@ click on the button and select the path to save the csv result file and the path
 
 ![welcome](/assets/images/GuiFLS/select_path.png?raw=true "selectpath")
 
-One it's launch, the welcome screen is showing
+One it's launch, the waiting screen is showing
 
 ![welcome](/assets/images/GuiFLS/wait_screen.png?raw=true "wait")
 
