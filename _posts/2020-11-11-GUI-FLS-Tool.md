@@ -18,7 +18,7 @@ It's a command line tool and take args that are a pain in the ass to remember. F
 
 So i decided to create my own and i wanted it to be simple and straightforward.
 
-Here it is : https://github.com/Xbloro/FLSGUI
+Here it is :[FLSGUITOOL](https://github.com/Xbloro/FLSGUI "here"). 
 
 A compiled version is available one the release section.
 
@@ -38,7 +38,7 @@ So basically,  u just have to click :
 
 Open the binary : 
 
-![welcome](/assets/images/GuiFLS/flsgui_welcoming?raw=true "welcome")
+![welcome](/assets/images/GuiFLS/flsgui_welcoming.png?raw=true "welcome")
 
 click on the button and select the path to save the csv result file and the path where to begin the FLS.
 
