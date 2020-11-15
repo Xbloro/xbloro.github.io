@@ -23,7 +23,7 @@ The tool is still in BETA and will crash if you don't provide it the right files
 
 
 
-Here it is :[GUIEncryptionTOOL](https://github.com/Xbloro/AES128WindowsFolderEncryption "here"). 
+Here it is :  [GUIEncryptionTOOL](https://github.com/Xbloro/AES128WindowsFolderEncryption "here")
 
 ![welcome](/assets/images/GUIEncryption/welcome.png?raw=true "welcome")
 
@@ -43,7 +43,7 @@ So i decide to use AES128 to encrypt the files.
 
 Thing is, we need to pass the key between two people in a secure way. That's where asymmetrical cryptographic come in place. For this one, i used RSA.
 
-So basically, data are encrypted with AES and a random generated Key. Then this key is encrypted using a public RSA Keys. 
+So basically, data are encrypted with AES and a random generated Key. Then this key is encrypted using a public RSA Key. 
 
 The tool is pretty straight forward : 
 - One button to create RSA keys;
@@ -59,7 +59,7 @@ It will also crash if u give to him the wrong keys.
 
 RSA keys are created in the directory you choose in xml :
 
-example of public key : 
+Example of public key : 
 
 ```xml
 <RSAKeyValue><Modulus>rnvJ9BhJG+opMU7RKww4cehrAxOAv0nlvBqIqgw/7MfRFWPSjXoppLmuom5K3b1a6AYqWKyBO1PSd59Wh4q49MUzlfMYg/KOWxIpFQDQ+deNmfoO1UqnikW3W3gXh7HBLbmFTqOphWsiE3MqlvWjJ5WPHwsOs/PD5Z1HXNL+mdE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>
@@ -74,7 +74,7 @@ example of public key :
 
 While encrypting the tool create 2 files :
 
-- an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredRSAKey.txt )
+- an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredAESKey.txt )
 - an encrypted file with .aes extension (name is > nameofthefolde.zip.aes )
 
 
