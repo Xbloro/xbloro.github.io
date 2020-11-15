@@ -60,10 +60,13 @@ It will also crash if u give to him the wrong keys.
 While encrypting the tool create 2 files :
 
 - an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredRSAKey.txt )
+
+![Keys](/assets/images/GUIEncryption/RSAkeypair.png?raw=true "keys")
+
+
 - an encrypted file with .aes extension (name is > nameofthefolde.zip.aes )
 
 
-![Keys](/assets/images/GUIEncryption/RSAkeypair.png?raw=true "keys")
 ![AESFiles](/assets/images/GUIEncryption/aesfiles.png?raw=true "aesfiles")
 
 
