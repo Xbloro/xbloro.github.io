@@ -57,13 +57,24 @@ It will also crash if u give to him the wrong keys.
 
 ## Info 
 
-While encrypting the tool create 2 files :
+RSA keys are created in the directory you choose in xml :
 
-- an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredRSAKey.txt )
+example of public key : 
+
+```xml
+<RSAKeyValue><Modulus>rnvJ9BhJG+opMU7RKww4cehrAxOAv0nlvBqIqgw/7MfRFWPSjXoppLmuom5K3b1a6AYqWKyBO1PSd59Wh4q49MUzlfMYg/KOWxIpFQDQ+deNmfoO1UqnikW3W3gXh7HBLbmFTqOphWsiE3MqlvWjJ5WPHwsOs/PD5Z1HXNL+mdE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue>
+```
+
+
 
 ![Keys](/assets/images/GUIEncryption/RSAkeypair.png?raw=true "keys")
 
 
+
+
+While encrypting the tool create 2 files :
+
+- an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredRSAKey.txt )
 - an encrypted file with .aes extension (name is > nameofthefolde.zip.aes )
 
 
