@@ -23,7 +23,7 @@ The tool is still in BETA and will crash if you don't provide it the right files
 
 
 
-Here it is :[GUIEncryptionTOOL](https://github.com/Xbloro/GuiEncryption "here"). 
+Here it is :[GUIEncryptionTOOL](https://github.com/Xbloro/AES128WindowsFolderEncryption "here"). 
 
 ![welcome](/assets/images/GUIEncryption/welcome.png?raw=true "welcome")
 
