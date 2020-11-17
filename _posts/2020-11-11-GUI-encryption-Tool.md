@@ -12,7 +12,7 @@ tags:
 
 # A little GUI Encryption Tool for Windows 
 
-I was bored so i tried to learn cryptographic development on windows.
+I was bored so i tried to learn cryptographic development on Windows.
 As a forensic analyst, u sometime have to work with sensitive data and its better to encrypt them for the transfer / copy / storage or whatever.
 
 
@@ -53,7 +53,7 @@ The tool is pretty straight forward :
 The tool will ask you the location of what it needs, you just have to click.
 Keep in mind that's a beta, it will crash if you provide it the wrong files, like a pub key instead of a private.
 
-It will also crash if u give to him the wrong keys.
+It will also crash if u give to him the wrong pair keys used to encrypt.
 
 ## Info 
 
@@ -74,7 +74,7 @@ Example of public key :
 
 While encrypting the tool create 2 files :
 
-- an txt file containing the cyphered AES key (name is > nameofthefolder_CypheredAESKey.txt )
+- a txt file containing the cyphered AES key (name is > nameofthefolder_CypheredAESKey.txt )
 - an encrypted file with .aes extension (name is > nameofthefolde.zip.aes )
 
 
@@ -85,7 +85,7 @@ While decrypting it create a folder with the same name as the one chosen to be e
 
 Be sure not to have already a folder containing the same name in the same directory or it will probably crash.
 
-(ex if your container name is HTB.zip.aes, don't decrypt it in a directory containing a folder name HTB).
+(ex: if your container name is HTB.zip.aes, don't decrypt it in a directory containing a folder name HTB).
 
 
 Tadaaa.

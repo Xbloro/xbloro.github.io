@@ -1,6 +1,6 @@
 ---
 
-title: " Tool you Must Have on a DFIR "
+title: " Tool that can be realy helpful on a DFIR "
 
 categories:
   - Tool
@@ -10,9 +10,9 @@ tags:
 
 ---
 
-# Tool you must have in a live DFIR on Windows
+# Nice tools to use in a live DFIR on Windows
 
-When investigating on a Windows system, their is a lot of things to check. Furthermore, in real condition, their are lot of machine to check and this can take you a lot of time.
+When investigating on a Windows system, their is a lot of things to check. Furthermore, in real condition, a big infrastructure to invest is realy time consuming.
 
 Time is precious during an attack !
 
@@ -28,7 +28,7 @@ I suggest that you rename them to be able to recognize them directly when invest
 
 ## SysInternal
 
-The SysInternal suite are some tools developed by Microsoft.
+The SysInternal suite are some tools developed by Mark Russinovich's.
 
 [Find them here](https://docs.microsoft.com/en-us/sysinternals/)
 
@@ -114,7 +114,9 @@ Be sure to get a payload ready on your USB KEY.
 
 ## Live OS
 
-I don't like to use liveOperating system in DFIR because you have to shutdown the guest. However it can be useful sometimes.
+I don't like to use liveOperating system in DFIR because you have to shutdown the guest and restart it etc etc. I'd better do a copy for DEAD forensic.
+
+ However it can be useful sometimes.
 
 Tsurugi is a debian based system made for forensic [get it there ](https://tsurugi-linux.org/)
 
@@ -132,11 +134,13 @@ Be careful with signatures, some AV can flag them.
 
 ![alt text](/assets/images/loki.png?raw=true "loki")  
 
-### AMCACHE Parser
+### Eric Zimmerman tools
 
-[Made by Eric Zimmerman](https://github.com/EricZimmerman/AmcacheParser)
+[Made by Eric Zimmerman](https://ericzimmerman.github.io/#!index.md)
 
-Let you get the content of the Amcache witch list program's installation details.
+Amcache Parser let you get the content of the Amcache witch list program's installation details.
+
+I suggest to check ntuser.dat and the shimcash (app compat cache)
 
 You can find [here](https://www.ssi.gouv.fr/uploads/2019/01/anssi-coriin_2019-analysis_amcache.pdf) a very nice article about it and how to get useful informations from it.
 
