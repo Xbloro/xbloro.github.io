@@ -1,6 +1,6 @@
 ---
 
-title: " Tool that can be realy helpful on a DFIR "
+title: " Tools that can be realy helpful on a DFIR "
 
 categories:
   - Tool
