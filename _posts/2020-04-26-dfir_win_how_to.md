@@ -323,6 +323,9 @@ La FLS permet, d'établir une timeline de modification des fichiers, à l'instar
 
 TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls "ici").
 
+J'ai fait un tool en GUI pour Windows [ici](https://github.com/Xbloro/FLSGUI "ici")
+([l'article](https://xbloro.github.io/tool/GUI-FLS-Tool/ "l'article"))
+
 
 
 ### 2.6 Jumplist
@@ -551,7 +554,25 @@ Des infos de connexion :
 
 
 
-# 3 Analyse et Rapport
+
+
+# 3 Produire une timeline 
+
+-
+
+La création d'une timeline est primordiale lors d'une attaque car elle permet de retracer toutes les actions de(s) attaquant(s) par ordre chronologique.
+
+Elle regroupe, à la manière d'un tableau de bord le timestamps, les actions, les artéfacts et autre.
+
+Elle permet de voir si des choses sont manquantes au niveau de l'enquête, par exemple si il manque une action entre deux steps d'une attaque, c'est que vous l'avez probablement ratée.
+
+Un exemple d'une timeline fait par la SANS : 
+
+![Timeline](/assets/images/Timeline.png?raw=true "timeline")
+
+
+
+# 4 Analyse et Rapport
 -
 
 Il faut donc faire la synthèse de tous les éléments trouvés et essayer d'en tirer des conclusions. C'est la partie la plus difficile  mais elle est nécessaire.  
@@ -560,7 +581,7 @@ Il n'y a pas de technique ici, pensez que c'est comme une analyse de texte au ba
 N'oubliez pas, l'analyse permet de tirer des conclusions  grâce aux éléments trouvés lors de l'investigation.
 Elle doit être présente et justifiée dans le rapport que vous allez rendre à votre client.
 
-# 4  Conclusion
+# 5 Conclusion
 -
 
 Nous voila arrivé à la fin, j'espère que cela aura pu vous être utile. Notez que cette méthodologie ne couvre pas tout ! Si vous voyez des erreurs ou des choses à rajouter n'hésitez pas pour qu'on puisse améliorer au maximum cet article.
