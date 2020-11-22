@@ -48,7 +48,7 @@ Prévoyez une bonne quantité de stockage car on va récupérer tout le contenu 
 Pour cela, le mieux (et dans le cadre d'une enquête judiciaire c'est obligatoire) est utiliser un tableau bloqueur-copieur.  
 C'est un équipement qui ressemble à ca :  
 
-<img src="/assets/images/td2u.jpg" width="400">
+<img src="/assets/images/dfirMethodo/td2u.jpg" width="400">
 
 Il permet de bloquer le flux en écriture vers la machine cible et d'en faire une image disque vers votre matériel.
 
