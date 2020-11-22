@@ -24,9 +24,9 @@ I tried Tsurugi Linux but it was lagging to much.
 
 ## Choosing the method
 
-I don't have any hardware thing related to USB etc so i can't create an analogical one. It will be software based.
+I don't have any hardware things related to USB etc. so i can't create an analogical one. It will be software based.
 
-It's really not recommended to use  a software blocker because they are still writing things, for example ext 4 will replay the journal (and thus write to the partition) even when mounted "read only". see >>  [ext4 documentation](https://www.kernel.org/doc/Documentation/filesystems/ext4.txt "ext4 documentation")
+It's really not recommended to use  a software blocker because they are still writing things, for example ext 4 will replay the journal (and thus write to the partition) even when mounted "read only". See >>  [ext4 documentation](https://www.kernel.org/doc/Documentation/filesystems/ext4.txt "ext4 documentation")
 
 But hey, it's not like i have a choice and it will be used to my own project, not at work, so it will do.
 
@@ -36,11 +36,11 @@ Their are  many ways to achieve this :
 
 - option 1 : Mount as RW only white-listed USB and mountig the rest as RO;
 - option 2 : Not mounting anythings automatically;
-- option 3 : Block a USB port as RO so everything that's plug in it is mounted as RO.
+- option 3 : Block only one USB port as RO so everything that's plug in it is mounted as RO.
 
 My first choice was the option 3 but i could never figure out how to do that  ¯\_(ツ)_/¯ so if you have a way, please tell me !
 
-So i went with option 2.
+I went with option 2.
 
 ## Canceling auto USB mountig 
 
@@ -108,9 +108,7 @@ As you can see, i can't write on the disk :
 
 No it's time to image : 
 
-I first used the GUI described before but it was crashing a soon as i plugged an USB key.
-
-So i tried FTK imager. But it wasn't build for ARM so it didn't work either...
+I first used the GUI described before but it was crashing a soon as i plugged an USB key. I tried then FTK imager. But it wasn't build for ARM so it didn't work either...
 
 We have 2 solution here :
 
