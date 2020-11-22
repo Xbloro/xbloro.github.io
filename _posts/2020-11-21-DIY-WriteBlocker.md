@@ -130,11 +130,9 @@ With EWF acquire :
 ewfacquire /dev/sdx
 ```
 
-
+It will ask you lot of question like the investigator name, case name, etc., etc., because it's a forensic purpose tool.
 
  If u planed to use it full time i recommend to use Kali.
-
-
 
 Tadaa, hope it helps.
 
