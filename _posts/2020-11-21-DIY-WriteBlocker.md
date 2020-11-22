@@ -1,6 +1,6 @@
 ---
 
-title: " Making my own diy Write blocker using  a RaspBery pi3 "
+title: " Raspi DIY Imager "
 
 categories:
   - Tool

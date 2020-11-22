@@ -117,29 +117,29 @@ Dans un premier temps il va vous demander les informations sur l'affaire, essaye
 
 On arrive ensuite au Menu ou on vous demande quel est le type de support que vous voulez importer, choisissez celui qui correspond.
 
-![alt text](/assets/images/Autmenu.png?raw=true "Menu")    
+![alt text](/assets/images/dfirMethodo/Autmenu.png?raw=true "Menu")    
 
 
 Si vous avez fait une copie EWF choisissez "Disk image" et sélectionnez le fichier n1 (E01), les autres seront importés automatiquement par Autopsy.  
 
 Il va vous demander ensuite ce que vous voulez récupérer sur l'image disque. On sélectionne tout.  
 
-![alt text](/assets/images/AutCheck.png?raw=true "Check")  
+![alt text](/assets/images/dfirMethodo/AutCheck.png?raw=true "Check")  
 
 Allez maintenant on peut allé se chercher un thé car c'est long.
 
-![alt text](/assets/images/AutLoad.png?raw=true "load")  
+![alt text](/assets/images/dfirMethodo/AutLoad.png?raw=true "load")  
 
 En attendant que le traitement soit fini, on va se familiariser avec l'interface.
 
 Sur la partie gauche vous avez une arborescence. En haut on a la première partie qui nous permet de voir le contenu du disque de la même façon que quand il est  monté sur la machine hôte. C'est à partir de cet emplacement que vous allez pouvoir naviguer dans l'arborescence de la machine pour récupérer les logs ainsi que le trousseau de clés par exemple.
 
 
-![alt text](/assets/images/AutSource.png?raw=true "Source")  
+![alt text](/assets/images/dfirMethodo/AutSource.png?raw=true "Source")  
 
 Pour exporter un fichier rien de plus simple, il suffit de cliquer droit et exporter, choisissez ensuite la destination sur votre machine.
 
-![alt text](/assets/images/AutExport.png?raw=true "Export")
+![alt text](/assets/images/dfirMethodo/AutExport.png?raw=true "Export")
 
 Attention cependant, si vous exportez un fichier malveillant, dropez le dans un fichier inaccessible par votre antivirus car il risquerait de le supprimer. je vous conseille de le zipper(avec mdp) pour éviter de cliquer dessus sans faire exprès. En général on change l'extension du fichier en le renommant.
 
@@ -148,14 +148,14 @@ Ensuite arrive la partie "View" qui trie les fichiers par type etc.
 C'est aussi la que la partie "CARVING" est accessible afin de rechercher les fichiers supprimés.
 
 
-![alt text](/assets/images/AutView.png?raw=true "view")
+![alt text](/assets/images/dfirMethodo/AutView.png?raw=true "view")
 
 Enfin on a la partie "Results" qui permet de voir des éléments intéressants, je vous laisse regarder.
 La partie "Exif" permet accéder rapidement aux photos et à leurs emplacements. 
 
 Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouvez facilement trouver son origine (powerpoint > macro malveillante etc.).
 
-![alt text](/assets/images/AutRes.png?raw=true "res")
+![alt text](/assets/images/dfirMethodo/AutRes.png?raw=true "res")
 
 
 
@@ -239,7 +239,7 @@ On peut les récupérer avec PowerShell :
 SchTasks.exe
 ```
 
-![alt text](/assets/images/schtasks.png?raw=true "tasks")
+![alt text](/assets/images/dfirMethodo/schtasks.png?raw=true "tasks")
 
 
 
@@ -251,7 +251,7 @@ On peut les récupérer avec PowerShell :
 Get-Service 
 ```
 
-![alt text](/assets/images/services.png?raw=true "tasks")
+![alt text](/assets/images/dfirMethodo/services.png?raw=true "tasks")
 
 
 
@@ -271,7 +271,7 @@ Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 
 Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique : 
 
-![alt text](/assets/images/autoruns.png?raw=true "tasks")
+![alt text](/assets/images/dfirMethodo/autoruns.png?raw=true "tasks")
 
 
 
@@ -568,7 +568,7 @@ Elle permet de voir si des choses sont manquantes au niveau de l'enquête, par e
 
 Un exemple d'une timeline fait par la SANS : 
 
-![Timeline](/assets/images/Timeline.png?raw=true "timeline")
+![Timeline](/assets/images/dfirMethodo/Timeline.png?raw=true "timeline")
 
 
 
