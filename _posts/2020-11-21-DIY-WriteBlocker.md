@@ -74,6 +74,8 @@ I'm used to [FTK imager](https://accessdata.com/product-download/debian-and-ubun
 
 I also found [Johntcw imager](https://github.com/johntcw/Forensic-Imager "Johntcw imager"), a python  based imager with a nice GUI.
 
+If you realy like EWF files and u should, [EWFacquire](https://linux.die.net/man/1/ewfacquire "ewfacquire") is made for you ! 
+
 Let's try both ! 
 
 ## Testing
@@ -117,6 +119,18 @@ We have 2 solution here :
 - Second one is to Install Kali for Raspberry pi and use FTK imager or DD.
 
 Since i plane to use my raspberry pi for other means i stayed with Raspian and used DD to copy my disk.
+
+```bash
+dd if=/dev/sdx of=whatever.iso bs=<block size> count=<volume size> status=progress
+```
+
+With EWF acquire : 
+
+```bash
+ewfacquire /dev/sdx
+```
+
+
 
  If u planed to use it full time i recommend to use Kali.
 
