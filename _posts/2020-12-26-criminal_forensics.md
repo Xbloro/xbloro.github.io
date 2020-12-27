@@ -43,6 +43,8 @@ Because i'm not at work, i dont have acces to my forensics gears so i will make 
 
 After a long time, it's done. Time to investigate !
 
+
+
 # Preliminary Investigation
 
 When investigating on a machine, the first step is to recover machine and users informations.
@@ -61,7 +63,7 @@ Autospy parse them in it's laste version :
 
  ![Parsed](/assets/images/CrimForensic/regParsedAutopsy.png?raw=true "Parsed")
 
-Let's go to 
+Let's go to :
 
 ```
 C:\windows\system32\config
@@ -69,23 +71,25 @@ C:\windows\system32\config
 
  to dump our registry keys. We w'll juste take Software and System for now.
 
-
-
 ### OS information
 
 Autopsy got a tab for OS name : 
 
  ![OsName](/assets/images/CrimForensic/osName.png?raw=true "osName")
 
-We could also look for it in the "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" registry key.
+We could also look for it in the :
+
+```
+SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion
+```
+
+ registry key.
 
 We got way more infos as u can see: 
 
  ![osInfoReg](/assets/images/CrimForensic/osInfoReg.png?raw=true "osInfoReg")
 
 We need, the OS Name, the build, the version and the install date.
-
-
 
 ### TimeZone 
 
@@ -131,7 +135,7 @@ As u can see, we got a lot of data here :) unlike a VM haha
 
 According to the infos, our guy was on the computeur when they breached in. He might have not got enought time to hide/destroy correctly the evidences.
 
-Lets check the NTUSER.dat file  
+Lets check the NTUSER.dat file, little reminder : 
 
 > Every time you make a change to the look and behavior of Windows and installed programs, whether that’s your desktop background, monitor resolution, or even which printer is the default, Windows needs to remember your preferences the next time it loads.
 
@@ -149,17 +153,17 @@ Lets check out what files were last accessed :
 
 ![founded](/assets/images/CrimForensic/founded.png?raw=true "founded")
 
-We can see that the file "client.zip.aes" and the binary "GuiEncryption.exe" were last accessed 2 minutes before the breach of specOps.
+We can see that the file "client.zip.aes" and the binary "GuiEncryption.exe" were last accessed 2 minutes before the breach.
 
 That what we are looking for ! Lets extracts them. (Look for their path in the NTUSER.DAT entry and go with the file explorer and then right click -> extracts files).
 
-Since we are playing with a binary, i suggest that u drop it in a excluded zone from ur AV and zip+pass it immediatly. We will execute it in a VM.
+Since we are playing with a binary, i suggest that u drop it in an excluded zone from ur AV and zip+pass it immediatly. We will execute it in a VM.
 
 Let's go with Flare VM :)
 
 The binary looks like, as it name sugest, an aes encryption tool.
 
-Using peBear we can see that he have a dependency called "mscorlib", one of .net base class libraries that every program in C# depends on it. That mean our PE is a .net. That will be ez to RE.
+Using peBear we can see that it have a dependency called "mscorlib", one of .net base class libraries that every program in C# depends on it. That mean our PE is a .net. That will be ez to RE.
 
 We can use the tool [Detect it eazy](http://ntinfo.biz/index.html) as well : 
 
@@ -189,15 +193,15 @@ Annnd, it failed that's not the good key :'(
 
 Back to work.
 
-The attacker was in a rush while encrypting so he might have not got enough time to destroy the key, lets search for it :
+The attacker was in a rush while encrypting so he might have not got enough time to destroy the key, lets search for it.
 
 Autopsy got a delet file tab but their is a lot of elements in there, it will take time to proceed. Instead lets try to think like the guy.
 
 The key is a file, since datas and software were found on his desktop, they is a great chance that the key is in the same place.
 
-Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can carve deleted file and no data were written on the disk so it should be able to recovers it, if it exist tho. 
+Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can carve deleted file and no data were written on the disk so it should be able to recovers it, if it exists tho. 
 
-But before that lets think. What do we do when we delet file in Windows ? 
+But before that let's think. What do we do when we delet file in Windows ? 
 
 The first reflex is to add it to the trashBin right ?
 
