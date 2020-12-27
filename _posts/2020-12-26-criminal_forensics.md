@@ -27,19 +27,19 @@ First of all, let's strike a pose. Like a prisoner we take picture of the eviden
 
 Front : 
 
-![Front](/assets/images/images/CrimForensic/laptopFront.png?raw=true "laptop front")
+![Front](/assets/images/CrimForensic/laptopFront.png?raw=true "laptop front")
 
 Back : 
 
-![Back](/assets/images/images/CrimForensic/laptopBack.png?raw=true "laptop back")
+![Back](/assets/images/CrimForensic/laptopBack.png?raw=true "laptop back")
 
 Then we disembowel it to get the Drive. Screwdrivers on !
 
-![HDDinside](/assets/images/images/CrimForensic/hddIn.png?raw=true "drive Insinde")
+![HDDinside](/assets/images/CrimForensic/hddIn.png?raw=true "drive Insinde")
 
 Because i'm not at work, i dont have acces to my forensics gear so i will make the disk copy using my [Raspi imager](https://xbloro.github.io/tool/DIY-WriteBlocker/), but w'ill just pretend it's OK ;)
 
- ![aquisition](/assets/images/images/CrimForensic/Aquisition.png?raw=true "aquiring")
+ ![aquisition](/assets/images/CrimForensic/Aquisition.png?raw=true "aquiring")
 
 After a long time, it's done. Time to investigate !
 
@@ -59,7 +59,7 @@ The WinApi is pretty good if u want to create ur own parsing  tool. I have mine 
 
 Autospy parse them in it's laste version : 
 
- ![Parsed](/assets/images/images/CrimForensic/regParsedAutopsy?raw=true "Parsed")
+ ![Parsed](/assets/images/CrimForensic/regParsedAutopsy?raw=true "Parsed")
 
 Let's go to "C:\windows\system32\config" to dump our registry keys. We w'll juste take Software and System for now.
 
@@ -69,13 +69,13 @@ Let's go to "C:\windows\system32\config" to dump our registry keys. We w'll just
 
 Autopsy got a tab for OS name : 
 
- ![OsName](/assets/images/images/CrimForensic/osName.png?raw=true "osName")
+ ![OsName](/assets/images/CrimForensic/osName.png?raw=true "osName")
 
 We could also look for it in the "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" registry key.
 
 We got way more info as u can see: 
 
- ![osInfoReg](/assets/images/images/CrimForensic/osInfoReg.png?raw=true "osInfoReg")
+ ![osInfoReg](/assets/images/CrimForensic/osInfoReg.png?raw=true "osInfoReg")
 
 We need, the OS Name, the build, the version and the install date.
 
@@ -87,7 +87,7 @@ It's important to get the timeZone info in order to correlate corectly informati
 
 U can find it here :  "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation"
 
- ![timeZone](/assets/images/images/CrimForensic/timezone.png?raw=true "timezone")
+ ![timeZone](/assets/images/CrimForensic/timezone.png?raw=true "timezone")
 
 This is **Romance Standard** Time so : 
 
@@ -107,7 +107,7 @@ U could alsow check the "C:\users" directory, but it might not be reliable.
 
 We have 3 profile here, 2 not counting the guest one.
 
-![profiles](/assets/images/images/CrimForensic/profileListe.png?raw=true "profiles")
+![profiles](/assets/images/CrimForensic/profileListe.png?raw=true "profiles")
 
 # Investigation 
 
@@ -115,7 +115,7 @@ Ok we got every info we needed so let's check out if we can find interesting thi
 
 As u can see, we got a lot of data here :) unlike a VM haha 
 
-![datas](/assets/images/images/CrimForensic/datas.png?raw=true "datas")
+![datas](/assets/images/CrimForensic/datas.png?raw=true "datas")
 
 According to the infos, our guy was on the computeur when they breached in. He might have not got enought time to hide/destroy correctly the evidences.
 
@@ -135,7 +135,7 @@ Autospsy as handy as always, has got a tab for it :)
 
 Lets check out what files were last accessed :
 
-![founded](/assets/images/images/CrimForensic/founded.png?raw=true "founded")
+![founded](/assets/images/CrimForensic/founded.png?raw=true "founded")
 
 We can see that the file "client.zip.aes" and the binary "GuiEncryption.exe" were last accessed 2 minutes before the breach of specOps.
 
@@ -151,11 +151,11 @@ Using peBear we can see that he have a dependency called "mscorlib", one of .net
 
 We can use the tool [Detect it eazy](http://ntinfo.biz/index.html) as well : 
 
-![die](/assets/images/images/CrimForensic/die.png?raw=true "die")
+![die](/assets/images/CrimForensic/die.png?raw=true "die")
 
 Let fire up dot peak : 
 
-![petree](/assets/images/images/CrimForensic/petree.png?raw=true "petree")
+![petree](/assets/images/CrimForensic/petree.png?raw=true "petree")
 
 We can see that it actually crypt file using AES and RSA.
 
@@ -163,15 +163,15 @@ But we do need the AES key.
 
 This is not a RE tuto and i suck at RE but after searching the strings files we find a built in aes key !
 
-![searchStr](/assets/images/images/CrimForensic/stringkeysearch.png?raw=true "searchstr") aeskeyBin
+![searchStr](/assets/images/CrimForensic/stringkeysearch.png?raw=true "searchstr") aeskeyBin
 
-![keyIn](/assets/images/images/CrimForensic/aeskeyBin.png?raw=true "keyIn")
+![keyIn](/assets/images/CrimForensic/aeskeyBin.png?raw=true "keyIn")
 
 Since the attacker used this tool, let's try do decrypt the datas we found earlier with it.
 
 The soft ask for a txt file so w'ill copy the key found in one :
 
-![trykey](/assets/images/images/CrimForensic/trykey.png?raw=true "trykey")
+![trykey](/assets/images/CrimForensic/trykey.png?raw=true "trykey")
 
 Annnd, it failed that's not the good key :'(
 
@@ -189,23 +189,23 @@ Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can
 
 Trash file is located in C:\ $RecycleBin, it is organise by users.
 
-![recycle](/assets/images/images/CrimForensic/recycle.png?raw=true "recycle")
+![recycle](/assets/images/CrimForensic/recycle.png?raw=true "recycle")
 
 Our user have the uid 1000, lets search for txt files  with creation date near the one of the encrypted file : 
 
-![keyfound](/assets/images/images/CrimForensic/keyfound.png?raw=true "keyfound")
+![keyfound](/assets/images/CrimForensic/keyfound.png?raw=true "keyfound")
 
-![keyinfo](/assets/images/images/CrimForensic/keyInfo.png?raw=true "keyinfo")
+![keyinfo](/assets/images/CrimForensic/keyInfo.png?raw=true "keyinfo")
 
 Looks like we have our key 
 
 Time to decrypt ! 
 
-![works](/assets/images/images/CrimForensic/finito.png?raw=true "works")
+![works](/assets/images/CrimForensic/finito.png?raw=true "works")
 
 
 
-![done](/assets/images/images/CrimForensic/datasuncrypted.png?raw=true "done")
+![done](/assets/images/CrimForensic/datasuncrypted.png?raw=true "done")
 
 Yeah we have got what our boss asked for.
 
