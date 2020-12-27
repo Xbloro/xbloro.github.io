@@ -1,20 +1,13 @@
 ---
 
-title: "Criminal forensics using Autospy"
+title: "criminal forensic invest "
 
 categories:
-
- \- DFIR
-
+  - DFIR
 tags:
-
- \- DFIR
-
- \- Windows
-
-\- Dead
-
-\---
+  - DFIR
+  - Windows
+---
 
 I found my old laptop  in my parent's home while i was back there for Chrismas. I tough that it could be fun to make a little investigation on it. Using VM is pretty handy but they are empty of data, so things are to easy to find. Moreover, playing with screwdrivers and HDD add a nice fealing to the... experience(? lol).
 
