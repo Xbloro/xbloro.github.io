@@ -9,13 +9,13 @@ tags:
   - Windows
 ---
 
-I found my old laptop  in my parent's home while i was back there for Chrismas. I tough that it could be fun to make a little investigation on it. Using VM is pretty handy but they are empty of data, so things are to easy to find. Moreover, playing with screwdrivers and HDD add a nice fealing to the... experience(? lol).
+I found my old laptop  in my parent's home while i was back there for Chrismas. I tough that it could be fun to make a little investigation on it. Using a VM is pretty handy but they are empty of datas, things are to easy to find. Moreover, playing with screwdrivers and HDD add a nice fealing to the..experience(? lol).
 
 # Scenario
 
-U 're a Police / GOV / what ever arrest bad guys  Certified Forensic Examiner and the DEA  juste gave you the laptop used by a dealer.
+U 're a Police / GOV / what ever arrest bad guys Certified Forensic Examiner and the DEA  juste gave you the laptop used by a dealer.
 
-The rapport say that the criminal was using it when they breached out. As soon as he saws them, he smashed the computer into the ground.
+The rapport says that the criminal was using it when they breached out. As soon as he saws them, he smashed the computer into the ground.
 
  The Detective in charge of the case want to take down the whole criminal network. He expects from you to recovers usefull informations like a list of contact or some rendez-vous with his provider.
 
@@ -23,7 +23,7 @@ The rapport say that the criminal was using it when they breached out. As soon a
 
 Ok time to play. 
 
-First of all, let's strike a pose. Like a prisoner we take picture of the evidence : 
+First of all, let's strike a pose. Like a prisoner we take pictures of the evidences : 
 
 Front : 
 
@@ -37,7 +37,7 @@ Then we disembowel it to get the Drive. Screwdrivers on !
 
 ![HDDinside](/assets/images/CrimForensic/hddIn.png?raw=true "drive Insinde")
 
-Because i'm not at work, i dont have acces to my forensics gear so i will make the disk copy using my [Raspi imager](https://xbloro.github.io/tool/DIY-WriteBlocker/), but w'ill just pretend it's OK ;)
+Because i'm not at work, i dont have acces to my forensics gears so i will make the disk copy using my [Raspi imager](https://xbloro.github.io/tool/DIY-WriteBlocker/), but w'll just pretend it's OK ;)
 
  ![aquisition](/assets/images/CrimForensic/Aquisition.png?raw=true "aquiring")
 
@@ -45,13 +45,13 @@ After a long time, it's done. Time to investigate !
 
 # Preliminary Investigation
 
-When investigating on a machine, the first step is to recovers machine and users informations.
+When investigating on a machine, the first step is to recover machine and users informations.
 
 ## Machine infos 
 
-Using powershell would take 1 command but since it's dead forensic we need to search on different places to gather what we need
+Using powershell would take 1 command but since it's dead forensic we need to search on different places to gather what we need.
 
-Since we need to look in registry keys, we have 2 options :  mount them in the windows reg key eddit, or parse them. 
+We need to look in registry keys, so we have 2 options :  mount them in the windows reg key eddit, or parse them. 
 
 The WinApi is pretty good if u want to create ur own parsing  tool. I have mine written in C#.
 
@@ -79,7 +79,7 @@ Autopsy got a tab for OS name :
 
 We could also look for it in the "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion" registry key.
 
-We got way more info as u can see: 
+We got way more infos as u can see: 
 
  ![osInfoReg](/assets/images/CrimForensic/osInfoReg.png?raw=true "osInfoReg")
 
@@ -89,7 +89,7 @@ We need, the OS Name, the build, the version and the install date.
 
 ### TimeZone 
 
-It's important to get the timeZone info in order to correlate corectly informations.
+It's important to get the timeZone info in order to correlate informations corectly.
 
 U can find it here :  
 
@@ -115,7 +115,7 @@ This time zone covers the following region and/or area: (UTC+01:00) Brussels, Co
 HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
 ```
 
-U could alsow check the "C:\users" directory, but it might not be reliable.
+U could alsow check the **C:\users\\** directory, but it might not be reliable.
 
 We have 3 profile here, 2 not counting the guest one.
 
@@ -165,17 +165,17 @@ We can use the tool [Detect it eazy](http://ntinfo.biz/index.html) as well :
 
 ![die](/assets/images/CrimForensic/die.png?raw=true "die")
 
-Let fire up dot peak : 
+Lets fire up dot peak : 
 
 ![petree](/assets/images/CrimForensic/petree.png?raw=true "petree")
 
-We can see that it actually crypt file using AES and RSA.
+We can see that it actually crypt file using AES and keys using RSA.
 
-But we do need the AES key.
+But we still need the AES key.
 
 This is not a RE tuto and i suck at RE but after searching the strings files we find a built in aes key !
 
-![searchStr](/assets/images/CrimForensic/stringkeysearch.png?raw=true "searchstr") aeskeyBin
+![searchStr](/assets/images/CrimForensic/stringkeysearch.png?raw=true "searchstr") 
 
 ![keyIn](/assets/images/CrimForensic/aeskeyBin.png?raw=true "keyIn")
 
@@ -195,15 +195,17 @@ Autopsy got a delet file tab but their is a lot of elements in there, it will ta
 
 The key is a file, since datas and software were found on his desktop, they is a great chance that the key is in the same place.
 
-Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can carve deleted file and no data were written on the disk so it should be able to recovers it, if it exist tho. But before that lets think. What do we do when we delet file in windows ? 
+Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can carve deleted file and no data were written on the disk so it should be able to recovers it, if it exist tho. 
 
- The first reflex is to add it to the trashBin right ?
+But before that lets think. What do we do when we delet file in Windows ? 
+
+The first reflex is to add it to the trashBin right ?
 
 Trash file is located in **C:\ $RecycleBin**, it is organise by users.
 
 ![recycle](/assets/images/CrimForensic/recycle.png?raw=true "recycle")
 
-Our user have the uid 1000, lets search for txt files  with creation date near the one of the encrypted file : 
+Our user have the uid 1000, let's search for txts files with creation date near the one of the encrypted file : 
 
 ![keyfound](/assets/images/CrimForensic/keyFound.png?raw=true "keyfound")
 
