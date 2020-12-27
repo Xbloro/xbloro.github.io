@@ -55,13 +55,19 @@ Since we need to look in registry keys, we have 2 options :  mount them in the w
 
 The WinApi is pretty good if u want to create ur own parsing  tool. I have mine written in C#.
 
- [regRipper](https://github.com/keydet89/RegRipper3.0) work's well but it does'nt provide everythings.
+ [RegRipper](https://github.com/keydet89/RegRipper3.0) work's well but it does'nt provide everythings.
 
 Autospy parse them in it's laste version : 
 
- ![Parsed](/assets/images/CrimForensic/regParsedAutopsy?raw=true "Parsed")
+ ![Parsed](/assets/images/CrimForensic/regParsedAutopsy.png?raw=true "Parsed")
 
-Let's go to "C:\windows\system32\config" to dump our registry keys. We w'll juste take Software and System for now.
+Let's go to 
+
+```
+C:\windows\system32\config
+```
+
+ to dump our registry keys. We w'll juste take Software and System for now.
 
 
 
@@ -85,7 +91,11 @@ We need, the OS Name, the build, the version and the install date.
 
 It's important to get the timeZone info in order to correlate corectly informations.
 
-U can find it here :  "HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation"
+U can find it here :  
+
+```
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation
+```
 
  ![timeZone](/assets/images/CrimForensic/timezone.png?raw=true "timezone")
 
@@ -101,13 +111,15 @@ This time zone covers the following region and/or area: (UTC+01:00) Brussels, Co
 
  Autospy got a tab for it but it does not provide anything this time, let check out this key :
 
-"HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
+```
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+```
 
 U could alsow check the "C:\users" directory, but it might not be reliable.
 
 We have 3 profile here, 2 not counting the guest one.
 
-![profiles](/assets/images/CrimForensic/profileListe.png?raw=true "profiles")
+![profiles](/assets/images/CrimForensic/profileList.png?raw=true "profiles")
 
 # Investigation 
 
@@ -187,13 +199,13 @@ Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can
 
  The first reflex is to add it to the trashBin right ?
 
-Trash file is located in C:\ $RecycleBin, it is organise by users.
+Trash file is located in **C:\ $RecycleBin**, it is organise by users.
 
 ![recycle](/assets/images/CrimForensic/recycle.png?raw=true "recycle")
 
 Our user have the uid 1000, lets search for txt files  with creation date near the one of the encrypted file : 
 
-![keyfound](/assets/images/CrimForensic/keyfound.png?raw=true "keyfound")
+![keyfound](/assets/images/CrimForensic/keyFound.png?raw=true "keyfound")
 
 ![keyinfo](/assets/images/CrimForensic/keyInfo.png?raw=true "keyinfo")
 
