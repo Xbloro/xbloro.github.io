@@ -3,12 +3,20 @@ layout: archive
 title: "DFIR"
 permalink: /post-dfir/
 author_profile: true
-feature_row:
+feature_row_dfir_methodo:
   - image_path: assets/images/dfirMethodo/dfir.jpg
     alt: "WinDFIR"
     title: "Methodo de DFIR sur Windows"
     excerpt: "En cours de révision"
     url: "https://xbloro.github.io/dfir/dfir_win_how_to/"
+    btn_label: "Read More"
+    btn_class: "btn--primary"
+feature_row_crimini:
+  - image_path: assets/images/CrimForensic/logo.jpg
+    alt: "forensics criminalistics"
+    title: "Little criminalistic oriented forensic scenario"
+    excerpt: ""
+    url: "https://xbloro.github.io/dfir/criminal_forensics/"
     btn_label: "Read More"
     btn_class: "btn--primary"
 ---
@@ -17,5 +25,5 @@ feature_row:
   {% include archive-single.html %}
 {% endfor %}
 
-
-{% include feature_row id="feature_row" type="center" %}
+{% include feature_row id="feature_row_crimini" type="center" %}
+{% include feature_row id="feature_row_dfir_methodo" type="center" %}
