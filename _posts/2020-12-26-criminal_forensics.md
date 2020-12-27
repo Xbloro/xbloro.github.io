@@ -125,6 +125,10 @@ We have 3 profile here, 2 not counting the guest one.
 
 ![profiles](/assets/images/CrimForensic/profileList.png?raw=true "profiles")
 
+
+
+
+
 # Investigation 
 
 Ok we got every info we needed so let's check out if we can find interesting things for our comrad Detective.
