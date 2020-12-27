@@ -169,7 +169,7 @@ We can use the tool [Detect it eazy](http://ntinfo.biz/index.html) as well :
 
 ![die](/assets/images/CrimForensic/die.png?raw=true "die")
 
-Lets fire up dot peak : 
+Let's fire up dot peak : 
 
 ![petree](/assets/images/CrimForensic/petree.png?raw=true "petree")
 
