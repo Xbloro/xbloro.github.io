@@ -1,6 +1,6 @@
 ---
 
-title: "criminal forensic invest "
+title: "Criminal forensic invest scenario"
 
 categories:
   - DFIR
@@ -216,8 +216,6 @@ Looks like we have our key
 Time to decrypt ! 
 
 ![works](/assets/images/CrimForensic/finito.png?raw=true "works")
-
-
 
 ![done](/assets/images/CrimForensic/datasuncrypted.png?raw=true "done")
 
