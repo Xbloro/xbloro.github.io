@@ -201,7 +201,7 @@ The attacker was in a rush while encrypting so he might have not got enough time
 
 Autopsy got a delet file tab but their is a lot of elements in there, it will take time to proceed. Instead lets try to think like the guy.
 
-The key is a file, since datas and software were found on his desktop, they is a great chance that the key is in the same place.
+The key is a file, since datas and software were found on his desktop, there is a great chance that the key is in the same place.
 
 Sadly we didn't found the key here. Maybe she was there but deleted. Autopsy can carve deleted file and no data were written on the disk so it should be able to recovers it, if it exists tho. 
 
