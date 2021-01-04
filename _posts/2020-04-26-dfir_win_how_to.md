@@ -32,10 +32,9 @@ Nous verrons en première partie quelques principes d'acquisition des médias pu
 
 ## Sommaire
 
+
+
 [TOC]
-
-
-
 
 
 ## Les types d'enquêtes
@@ -175,13 +174,15 @@ L'outils [Redline](https://www.fireeye.fr/services/freeware/redline.html) de Fir
 Le logiciel fonctionne de cette façon, vous choisissez les informations que vous souhaitez récupérer et vous créez un payload que vous déposerez sur un média amovible. Pourquoi? car il ne faut pas compromettre les données de la machine et donc ne rien transférer ou exécuter dessus. C'est pour cela que notre payload sera exécuté SUR le média amovible. Notez que la RAM sera déposée sur votre média amovible il faut donc que la capacité mémoire de ce dernier soit plus élevé que la RAM de la machine.
 
 Dans le menu on nous propose 3 choix :
--Le premier permet de récupérer des informations sur la machines (utilisateurs, profile machine, etc.) et de dumper la RAM;
--Le second permet la même chose mais en plus de rechercher des IOCs (vous pouvez lui fournir une liste perso) ;
--Le dernier permet de rechercher ses propres IOC. (Si vous êtes dans une entreprise et que vous voulez chercher des traces d'intrusions dans toute la foret info c'est assez sympa, suffit de déployer le payload via PowerShell  ).
 
-A présent, on branche le média amovible sur le Windows cible et on exécute le script "RunRedlineAudit.bat".
+- Le premier permet de récupérer des informations sur la machines (utilisateurs, profile machine, etc.) et de dumper la RAM;
+- Le second permet la même chose mais en plus de rechercher des IOCs (vous pouvez lui fournir une liste perso) ;
+- Le dernier permet de rechercher ses propres IOC. 
+
+Il suffit ensuite d'exécuter le script "RunRedlineAudit.bat".
 
 Une fois l'opération terminée, un fichier "AnalysisSessionX.mans " est créé dans le répertoire de votre payload.
+
 Il suffit juste de l'ouvrir avec RedLine.
 
 ![alt text](/assets/images/dfirMethodo/menuCollecteur.png?raw=true "tasks")
