@@ -331,7 +331,252 @@ Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique 
 
 
 
-### 1.6 Liste des Clés à checker
+
+
+### 1.7 Process
+
+Récupérer les evenement par processus :
+
+```powershell
+Get-WinEvent -FilterHashTable @{Logname = "Security" ; ID = 5059,5061}
+```
+
+
+
+## Le réseau
+
+Sysinternal TCP view fait très bien le taff :)
+
+![alt text](/assets/images/dfirMethodo/tcpview.png?raw=true "tasks")
+
+Get TCP by PID
+
+```powershell
+while($true){ $processes = (Get-NetTCPConnection | ? {($_.RemoteAddress -eq "IPaddr")}).OwningProcess; foreach ($process in $processes) { Get-Process -PID $process | select ID,ProcessName } }
+```
+
+
+
+## Fichiers et timeline
+
+###  Eléments supprimés
+
+On peut les récupérer comme vue avec Autopsy, si non [PhotoRec](https://www.cgsecurity.org/wiki/PhotoRec "PhotoRec")  marche très bien.
+
+### Fichiers intéressants
+
+Vous êtes parfois  amenés à chercher des fichiers (IOC etc.)
+
+Un petit One Liner Powershell pour faire une recherche récursive
+
+```powershell
+dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
+```
+
+Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3  "attaques").
+
+
+
+### Parser la MFT
+
+Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
+
+Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qui marche très bien.
+
+### 2.4 Parser l'Amcache
+
+> L’AmCache est une base de données spécifiques à Windows 7, 8 et 10 et leurs équivalents serveurs, qui consigne des métadonnées portant sur l’exécution de binaires et l’installation de programmes sur un système. Méconnue et objet de recherches insuffisantes, cette base constitue un artefact sous-exploité dans le cadre des investigations numériques.
+
+ Un petit papier de l'anssi [ici](https://www.ssi.gouv.fr/agence/publication/analyse-de-lamcache/ "ici")
+
+Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des formateurs SANS, je recommande vraiment d'aller voir son travail.
+
+### Parser le NTUSER.dat
+
+Les ShellBags :
+
+La pluspart des shellBags sont dans le NTUSER.DAT
+
+>  Every time you make a change to the look and behavior of Windows and installed programs, whether that’s your desktop background, monitor resolution, or even which printer is the default, Windows needs to remember your preferences the next time it loads.
+
+Petit  [article](https://www.sans.org/reading-room/whitepapers/forensics/windows-shellbag-forensics-in-depth-34545) SANS sur les shellBags
+
+>  Microsoft Windows records the view preferences of folders and Desktop. Therefore, when the folder/Desktop is visited again, Windows can remember the location of the folder, view and positions of items. Microsoft Windows store the view preferences in the registry keys and values known as “ShellBags”.
+>
+> ShellBag information is crucial when forensicators need to know when and which folder a user accessed. For instance, when a company suspects an employee leaked a confidential document stored on the network, that employee’s computer may have the ShellBag information that demonstrates the folder containing that document was accessed shortly before the document was leaked. Furthermore, ShellBags may also show the folders or servers that employee should not access. 
+
+###  Faire une FLS
+
+La FLS permet, d'établir une timeline de modification des fichiers, à l'instar du parsing de la mft vu précédment.
+
+TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls "ici").
+
+J'ai fait un tool en GUI pour Windows [ici](https://github.com/Xbloro/FLSGUI "ici")
+([l'article](https://xbloro.github.io/tool/GUI-FLS-Tool/ "l'article"))
+
+###  Jumplist
+
+La jumpList contient les fichiers récent ouvert par des applications ou l'utilisateur , elle se trouve ici :
+
+```
+Nom de l'user +"\\AppData\\Roaming\\Microsoft\\Windows\\Recent"; 
+```
+
+###  Last Activity view
+
+Last activity view est un tool bien pratique de nirsoft accessible [ici](https://www.nirsoft.net/utils/computer_activity_view.html "ici")
+
+Il permet, comme son nom l'indique de voir les dernières activités faites sur l'ordinateur.
+
+
+
+## 3 Matériel et autre
+
+### 3.1 Clés usb : 
+
+Pour lister les clés branchées au moins une fois sur la machine : 
+
+```powershell
+Get-ItemProperty -ErrorAction SilentlyContinue -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*\*
+```
+
+Vous pouvez lister les éléments ci-dessous en changeant le path de la commande :
+
+```powershell
+Get-ItemProperty -ErrorAction SilentlyContinue -Path clé-de-reg-ici
+```
+
+
+
+| description                              | Clé                                                          |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| Les disques montés                       | HKLM\SYSTEM\MountedDevices                                   |
+| Un autre endroit pour les disques montés | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\CPCVolume |
+| Les disques réseau                       | HKCU\Software\Microsoft\Windows\Current\VersionExplorer\MountPoints2 |
+| les clés USB montée                      | HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR                   |
+
+# Informations utiles 
+
+## 1 Le trousseau de clés
+
+-
+Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre .
+
+Le dictionnaire de l'informatique Microsoft (Microsoft Computer Dictionary), cinquième édition, définit le Registre comme :
+une base de données hiérarchique centrale, permettant de stocker les informations qui sont nécessaires pour configurer le système pour un ou plusieurs utilisateurs, programmes et périphériques matériels.
+
+Lors de son exécution, Windows consulte en permanence les informations contenues dans le Registre, telles que les profils des utilisateurs, les applications installées sur l'ordinateur et les types de documents qu'elles peuvent créer, les paramètres de la feuille de propriétés pour les dossiers et les icônes des applications, le matériel du système et les ports utilisés.
+
+Une ruche du Registre est un groupe de clés, de sous-clés et de valeurs du Registre associé à un ensemble de fichiers de prise en charge qui contiennent des sauvegardes de ses données.
+
+Les clés de registres sont situées ici : C:\Windows\system32\config\
+
+Voici toutes les clés, on va essayer d'expliquer un petit peu à quoi elles servent.  
+
+| Registre | localisation|
+|------------------------------- | ----------------------------|
+| HKEY_USERS |  \Documents and Setting\User Profile\NTUSER.DAT |
+| HKEY_USERS\DEFAULT | C(:\Windows\system32\config\default |
+| HKEY_LOCAL_MACHINE\SAM | C:\Windows\system32\config\SAM  |
+| HKEY_LOCAL_MACHINE\SECURITY | C:\Windows\system32\config\SECURITY  |
+| HKEY_LOCAL_MACHINE\SOFTWARE | C:\Windows\system32\config\software |
+| HKEY_LOCAL_MACHINE\SYSTEM | C:\Windows\system32\config\system |
+
+HKEY_USERS contient tous les profils utilisateurs chargés activement sur l'ordinateur. HKEY_CURRENT_USER est une sous-clé de HKEY_USERS. L'abréviation « HKU » est parfois utilisée pour faire référence à HKEY_USERS.
+
+NTUSER.dat contient toutes les informations spécifiques à chaque profil utilisateur (son compte de session)
+La clé Default contient les informations spécifiques au system local et est utilisée par les programmes et services exécutés en tant que système local.
+
+HKEY_LOCAL_MACHINE contient des informations de configuration spécifiques à l'ordinateur (pour n'importe quel utilisateur). L'abréviation « HKLM » est parfois utilisée pour faire référence à cette clé.
+
+SAM est le gestionnaire de comptes de sécurité (The Security Account Manager), il stocke les mots de passe des utilisateurs. Il peut être utilisé pour authentifier les utilisateurs locaux et distants.
+
+SECURITY est utilisé par le Kernel pour lire et appliquer la politique de sécurité applicable à l'utilisateur actuel et à toutes les applications ou opérations exécutées par cet utilisateur. Il contient également une sous-clé "SAM" qui est dynamiquement liée à la base de données SAM du domaine sur lequel l'utilisateur actuel est connecté.
+
+SOFTWARE contient les logiciels et les paramètres Windows. Il est principalement modifié par les installateurs d'applications et de systèmes.
+
+SYSTEM contient des informations sur la configuration du système Windows, les données du générateur de nombres aléatoires sécurisés (RNG), la liste des périphériques montés contenant un système de fichiers, plusieurs numéros "HKLM \ SYSTEM \ Control Sets" contenant des configurations alternatives pour les pilotes de matériel et les services en cours d'exécution.
+
+
+HKEY_CLASSES_ROOT est une sous-clé de HKEY_LOCAL_MACHINE\Software. Les informations qui sont stockées à cet emplacement font en sorte que le programme approprié s'exécute lorsque vous ouvrez un fichier à l'aide de l'Explorateur Windows.
+
+HKEY_CURRENT_CONFIG contient des informations sur le profil matériel utilisé par l'ordinateur local au démarrage du système.
+
+Et oui ca fait un paquet de choses à voir hein ? Allez on se décourage pas je vais vous donner deux trois pistes à explorer !
+
+Pour avoir accès au contenue des clé vous pouvez utiliser l'utilitaire Regedit de Windows et importer les ruches.  
+Vous pouvez également utiliser regRipper, il vous donnera tout le contenu en fichier texte.
+
+Pour tout ce qui est fichiers : 
+
+| description | Clé |
+|------------------------------- | -------------------------------------------------------------------------------|
+| Les fichier ouvert récemment | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSaveMRU  |
+| Les fichier ouvert via winexplorer | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs |
+| Les fichier recherchés dans le menu | HKCU\Software\Microsoft\Search Assistant\ACMru |
+
+
+Pour tout ce qui est Volume et média amovibles :
+
+|   description   | Clé  |
+|------------------------------- | -------------------------------------------------------------------------------|
+| Les disques montés | HKLM\SYSTEM\MountedDevices  |
+| Un autre endroit pour les disques montés | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\CPCVolume |
+| Les disques réseau | HKCU\Software\Microsoft\Windows\Current\VersionExplorer\MountPoints2 |
+| les clés USB montée | HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR  |
+
+Pour tout ce qui est Autorun, injection de commande et programme :  
+
+| description | Clé |
+|------------------------------- | -------------------------------------------------------------------------------|
+| Liste des entrées dans l'invité "RUN" |  HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU  |
+| Les autoruns | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run |
+
+| Les services lancés automatiquement |
+|------------------------------- |
+| HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\Services |
+| HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\Services ou alors HKLM\SYSTEM\CurrentControlSet\Services  |
+| HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\ServicesOnce |
+| HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\ServicesOnce  (oui c'est pas la même que au dessus on est dans HKCU)|
+
+| Les commandes lancées automatiquement avec cmd.exe |
+|------------------------------- |
+| HKLM\SOFTWARE\Microsoft\Command Processor |
+| HKCU\Software\Microsoft\Command Processor (oui c'est pas la même que au dessus on est dans HKCU) |
+
+| Les programmes se drope ici pour rester persistant|
+|------------------------------- |
+|HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon  (beacoup de malwares font ca ;) )|
+
+|Donne les infos de lancement des executables |
+|------------------------------- |
+|HKCR\exe\fileshell\opencommand |
+|HKEY_CLASSES_ROOT\batfile\shell\open\command|
+|HKEY_CLASSES_ROOT\comfile\shell\open\command |
+|Si vous trouvez : " default = “%1” %* >> somefilename.exe " c'est suspect suspect ! |
+
+
+| Pour tout ce qui est programmes |
+|------------------------------- |
+| Permet de voir les programmes lancées : Ntuser.DAT  |
+| HKEY_CURRENT_USER\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache  |
+| HKEY_CURRENT_USER\Microsoft\Windows\ShellNoRoam\MUICache |
+| HKEY_CURRENT_USER\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Persisted  |
+| HKEY_CURRENT_USER\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store  |
+| HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\Shell\MuiCache  |
+| programme installé : HKLM\SOFTWARE\Microsoft\Windows\Current\Version\Uninstall  |
+
+Vous êtes encore la? allez encore une !
+
+| Pour tout ce qui est Réseau |
+|------------------------------- |
+| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles |
+| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\Nla |
+| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\NLA (c'est pas la même que au dessus) |
+| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\Nla\Cache\IntranetAuth |
+| ControlSet001\Services\Tcpip\Parameters\Interfaces\ |
+
+**Les Autoruns** 
 
 Une petite liste mais c'est long :), go checker avec autoruns !
 
@@ -593,251 +838,6 @@ HKCU\Software\Wow6432Node\Microsoft\Office\Onenote\Addins
 HKLM\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
 HKCU\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
 ```
-
-### 1.7 Process
-
-Récupérer les evenement par processus :
-
-```powershell
-Get-WinEvent -FilterHashTable @{Logname = "Security" ; ID = 5059,5061}
-```
-
-
-
-## Le réseau
-
-Sysinternal TCP view fait très bien le taff :)
-
-![alt text](/assets/images/dfirMethodo/tcpview.png?raw=true "tasks")
-
-Get TCP by PID
-
-```powershell
-while($true){ $processes = (Get-NetTCPConnection | ? {($_.RemoteAddress -eq "IPaddr")}).OwningProcess; foreach ($process in $processes) { Get-Process -PID $process | select ID,ProcessName } }
-```
-
-
-
-## Fichiers et timeline
-
-###  Eléments supprimés
-
-On peut les récupérer comme vue avec Autopsy, si non [PhotoRec](https://www.cgsecurity.org/wiki/PhotoRec "PhotoRec")  marche très bien.
-
-### Fichiers intéressants
-
-Vous êtes parfois  amenés à chercher des fichiers (IOC etc.)
-
-Un petit One Liner Powershell pour faire une recherche récursive
-
-```powershell
-dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
-```
-
-Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3  "attaques").
-
-
-
-### Parser la MFT
-
-Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
-
-Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qui marche très bien.
-
-### 2.4 Parser l'Amcache
-
-> L’AmCache est une base de données spécifiques à Windows 7, 8 et 10 et leurs équivalents serveurs, qui consigne des métadonnées portant sur l’exécution de binaires et l’installation de programmes sur un système. Méconnue et objet de recherches insuffisantes, cette base constitue un artefact sous-exploité dans le cadre des investigations numériques.
-
- Un petit papier de l'anssi [ici](https://www.ssi.gouv.fr/agence/publication/analyse-de-lamcache/ "ici")
-
-Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des formateurs SANS, je recommande vraiment d'aller voir son travail.
-
-### Parser le NTUSER.dat
-
-Les ShellBags :
-
-La pluspart des shellBags sont dans le NTUSER.DAT
-
->  Every time you make a change to the look and behavior of Windows and installed programs, whether that’s your desktop background, monitor resolution, or even which printer is the default, Windows needs to remember your preferences the next time it loads.
-
-Petit  [article](https://www.sans.org/reading-room/whitepapers/forensics/windows-shellbag-forensics-in-depth-34545) SANS sur les shellBags
-
->  Microsoft Windows records the view preferences of folders and Desktop. Therefore, when the folder/Desktop is visited again, Windows can remember the location of the folder, view and positions of items. Microsoft Windows store the view preferences in the registry keys and values known as “ShellBags”.
->
-> ShellBag information is crucial when forensicators need to know when and which folder a user accessed. For instance, when a company suspects an employee leaked a confidential document stored on the network, that employee’s computer may have the ShellBag information that demonstrates the folder containing that document was accessed shortly before the document was leaked. Furthermore, ShellBags may also show the folders or servers that employee should not access. 
-
-###  Faire une FLS
-
-La FLS permet, d'établir une timeline de modification des fichiers, à l'instar du parsing de la mft vu précédment.
-
-TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls "ici").
-
-J'ai fait un tool en GUI pour Windows [ici](https://github.com/Xbloro/FLSGUI "ici")
-([l'article](https://xbloro.github.io/tool/GUI-FLS-Tool/ "l'article"))
-
-###  Jumplist
-
-La jumpList contient les fichiers récent ouvert par des applications ou l'utilisateur , elle se trouve ici :
-
-```
-Nom de l'user +"\\AppData\\Roaming\\Microsoft\\Windows\\Recent"; 
-```
-
-###  Last Activity view
-
-Last activity view est un tool bien pratique de nirsoft accessible [ici](https://www.nirsoft.net/utils/computer_activity_view.html "ici")
-
-Il permet, comme son nom l'indique de voir les dernières activités faites sur l'ordinateur.
-
-
-
-## 3 Matériel et autre
-
-### 3.1 Clés usb : 
-
-Pour lister les clés branchées au moins une fois sur la machine : 
-
-```powershell
-Get-ItemProperty -ErrorAction SilentlyContinue -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*\*
-```
-
-Vous pouvez lister les éléments ci-dessous en changeant le path de la commande :
-
-```powershell
-Get-ItemProperty -ErrorAction SilentlyContinue -Path clé-de-reg-ici
-```
-
-
-
-| description                              | Clé                                                          |
-| ---------------------------------------- | ------------------------------------------------------------ |
-| Les disques montés                       | HKLM\SYSTEM\MountedDevices                                   |
-| Un autre endroit pour les disques montés | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\CPCVolume |
-| Les disques réseau                       | HKCU\Software\Microsoft\Windows\Current\VersionExplorer\MountPoints2 |
-| les clés USB montée                      | HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR                   |
-
-# Informations utiles 
-
-## 1 Le trousseau de clés
-
--
-Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre .
-
-Le dictionnaire de l'informatique Microsoft (Microsoft Computer Dictionary), cinquième édition, définit le Registre comme :
-une base de données hiérarchique centrale, permettant de stocker les informations qui sont nécessaires pour configurer le système pour un ou plusieurs utilisateurs, programmes et périphériques matériels.
-
-Lors de son exécution, Windows consulte en permanence les informations contenues dans le Registre, telles que les profils des utilisateurs, les applications installées sur l'ordinateur et les types de documents qu'elles peuvent créer, les paramètres de la feuille de propriétés pour les dossiers et les icônes des applications, le matériel du système et les ports utilisés.
-
-Une ruche du Registre est un groupe de clés, de sous-clés et de valeurs du Registre associé à un ensemble de fichiers de prise en charge qui contiennent des sauvegardes de ses données.
-
-Les clés de registres sont situées ici : C:\Windows\system32\config\
-
-Voici toutes les clés, on va essayer d'expliquer un petit peu à quoi elles servent.  
-
-| Registre | localisation|
-|------------------------------- | ----------------------------|
-| HKEY_USERS |  \Documents and Setting\User Profile\NTUSER.DAT |
-| HKEY_USERS\DEFAULT | C(:\Windows\system32\config\default |
-| HKEY_LOCAL_MACHINE\SAM | C:\Windows\system32\config\SAM  |
-| HKEY_LOCAL_MACHINE\SECURITY | C:\Windows\system32\config\SECURITY  |
-| HKEY_LOCAL_MACHINE\SOFTWARE | C:\Windows\system32\config\software |
-| HKEY_LOCAL_MACHINE\SYSTEM | C:\Windows\system32\config\system |
-
-HKEY_USERS contient tous les profils utilisateurs chargés activement sur l'ordinateur. HKEY_CURRENT_USER est une sous-clé de HKEY_USERS. L'abréviation « HKU » est parfois utilisée pour faire référence à HKEY_USERS.
-
-NTUSER.dat contient toutes les informations spécifiques à chaque profil utilisateur (son compte de session)
-La clé Default contient les informations spécifiques au system local et est utilisée par les programmes et services exécutés en tant que système local.
-
-HKEY_LOCAL_MACHINE contient des informations de configuration spécifiques à l'ordinateur (pour n'importe quel utilisateur). L'abréviation « HKLM » est parfois utilisée pour faire référence à cette clé.
-
-SAM est le gestionnaire de comptes de sécurité (The Security Account Manager), il stocke les mots de passe des utilisateurs. Il peut être utilisé pour authentifier les utilisateurs locaux et distants.
-
-SECURITY est utilisé par le Kernel pour lire et appliquer la politique de sécurité applicable à l'utilisateur actuel et à toutes les applications ou opérations exécutées par cet utilisateur. Il contient également une sous-clé "SAM" qui est dynamiquement liée à la base de données SAM du domaine sur lequel l'utilisateur actuel est connecté.
-
-SOFTWARE contient les logiciels et les paramètres Windows. Il est principalement modifié par les installateurs d'applications et de systèmes.
-
-SYSTEM contient des informations sur la configuration du système Windows, les données du générateur de nombres aléatoires sécurisés (RNG), la liste des périphériques montés contenant un système de fichiers, plusieurs numéros "HKLM \ SYSTEM \ Control Sets" contenant des configurations alternatives pour les pilotes de matériel et les services en cours d'exécution.
-
-
-HKEY_CLASSES_ROOT est une sous-clé de HKEY_LOCAL_MACHINE\Software. Les informations qui sont stockées à cet emplacement font en sorte que le programme approprié s'exécute lorsque vous ouvrez un fichier à l'aide de l'Explorateur Windows.
-
-HKEY_CURRENT_CONFIG contient des informations sur le profil matériel utilisé par l'ordinateur local au démarrage du système.
-
-Et oui ca fait un paquet de choses à voir hein ? Allez on se décourage pas je vais vous donner deux trois pistes à explorer !
-
-Pour avoir accès au contenue des clé vous pouvez utiliser l'utilitaire Regedit de Windows et importer les ruches.  
-Vous pouvez également utiliser regRipper, il vous donnera tout le contenu en fichier texte.
-
-Pour tout ce qui est fichiers : 
-
-| description | Clé |
-|------------------------------- | -------------------------------------------------------------------------------|
-| Les fichier ouvert récemment | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ComDlg32\OpenSaveMRU  |
-| Les fichier ouvert via winexplorer | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs |
-| Les fichier recherchés dans le menu | HKCU\Software\Microsoft\Search Assistant\ACMru |
-
-
-Pour tout ce qui est Volume et média amovibles :
-
-|   description   | Clé  |
-|------------------------------- | -------------------------------------------------------------------------------|
-| Les disques montés | HKLM\SYSTEM\MountedDevices  |
-| Un autre endroit pour les disques montés | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\MountPoints2\CPCVolume |
-| Les disques réseau | HKCU\Software\Microsoft\Windows\Current\VersionExplorer\MountPoints2 |
-| les clés USB montée | HKLM\SYSTEM\CurrentControlSet\Enum\USBSTOR  |
-
-Pour tout ce qui est Autorun, injection de commande et programme :  
-
-| description | Clé |
-|------------------------------- | -------------------------------------------------------------------------------|
-| Liste des entrées dans l'invité "RUN" |  HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU  |
-| Les autoruns | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run |
-
-| Les services lancés automatiquement |
-|------------------------------- |
-| HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\Services |
-| HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\Services ou alors HKLM\SYSTEM\CurrentControlSet\Services  |
-| HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\ServicesOnce |
-| HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run\ServicesOnce  (oui c'est pas la même que au dessus on est dans HKCU)|
-
-| Les commandes lancées automatiquement avec cmd.exe |
-|------------------------------- |
-| HKLM\SOFTWARE\Microsoft\Command Processor |
-| HKCU\Software\Microsoft\Command Processor (oui c'est pas la même que au dessus on est dans HKCU) |
-
-| Les programmes se drope ici pour rester persistant|
-|------------------------------- |
-|HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon  (beacoup de malwares font ca ;) )|
-
-|Donne les infos de lancement des executables |
-|------------------------------- |
-|HKCR\exe\fileshell\opencommand |
-|HKEY_CLASSES_ROOT\batfile\shell\open\command|
-|HKEY_CLASSES_ROOT\comfile\shell\open\command |
-|Si vous trouvez : " default = “%1” %* >> somefilename.exe " c'est suspect suspect ! |
-
-
-| Pour tout ce qui est programmes |
-|------------------------------- |
-| Permet de voir les programmes lancées : Ntuser.DAT  |
-| HKEY_CURRENT_USER\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache  |
-| HKEY_CURRENT_USER\Microsoft\Windows\ShellNoRoam\MUICache |
-| HKEY_CURRENT_USER\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Persisted  |
-| HKEY_CURRENT_USER\Microsoft\Windows NT\CurrentVersion\AppCompatFlags\Compatibility Assistant\Store  |
-| HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\Shell\MuiCache  |
-| programme installé : HKLM\SOFTWARE\Microsoft\Windows\Current\Version\Uninstall  |
-
-Vous êtes encore la? allez encore une !
-
-| Pour tout ce qui est Réseau |
-|------------------------------- |
-| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles |
-| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\Nla |
-| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\NLA (c'est pas la même que au dessus) |
-| SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\Nla\Cache\IntranetAuth |
-| ControlSet001\Services\Tcpip\Parameters\Interfaces\ |
-
-
 
 ## 2 L'investigations des journaux (LOG)
 -
