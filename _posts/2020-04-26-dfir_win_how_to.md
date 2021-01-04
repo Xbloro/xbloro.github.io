@@ -18,7 +18,7 @@ j'essaie de corriger les fautes d'orthographe au max.
 
 Ce document détaille quelques procédures et éléments intéressants lors d'une investigation live/ dead forensique Windows.
 N'hésitez pas à me donner votre avis ou me dire si j'ai fait des erreurs. 
-Si vous avez des questions n'hésitez pas sur [twitter](https://tw.itter.com/HHUG0 "twitter").
+Si vous avez des questions n'hésitez pas.
 
 # Disclamer
 
@@ -924,3 +924,5 @@ https://support.microsoft.com/fr-fr/help/256986/windows-registry-information-for
 https://devblogs.microsoft.com/oldnewthing/20070302-00/?p=27783
 https://en.wikipedia.org/wiki/Windows_Registry#HKEY_LOCAL_MACHINE_(HKLM)
 https://docs.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/cc976337(v=technet.10)?redirectedfrom=MSDN
+
+https://www.jaiminton.com/cheatsheet/DFIR/
