@@ -30,6 +30,12 @@ Ce document n'est pas exhaustif, en fonction de votre entreprise, expérience, c
 Quand un attaquant pénètre dans un système, il laisse toujours des traces de son passage. Dans cet article nous allons étudier les mécanismes de Windows afin de trouver des "preuves". Par la suite nous allons essayer de construire une timeline du déroulement de l'attaque.
 Nous verrons en première partie quelques principes d'acquisition des médias puis nous passerons à l'investigation.
 
+## Sommaire
+
+[TOC]
+
+
+
 
 
 ## Les types d'enquêtes
@@ -40,7 +46,7 @@ La principale différence entre les deux est la préservation obligatoire de l'i
 
 # Préparation pour l'investigation en DEAD
 
-## 1  Acquisition des disques  
+##  Acquisition des disques  
 -
 
 Prévoyez une bonne quantité de stockage car on va récupérer tout le contenu des disques présent dans la machine cible.  
@@ -91,7 +97,8 @@ Ca en fait hein ? Mais bon on est jamais trop prudent et croyez moi une erreur a
 
 
 
-## 2 Préparation d'un environnement de travail 
+## Préparation d'un environnement de travail 
+
 -
 
 Au cours de cet article nous utiliserons Windows mais libre à vous de choisir votre environnement préféré.
@@ -108,7 +115,7 @@ On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "r
 
 
 
-## 3 Petit point Autopsy 
+## Petit point Autopsy 
 -
 
 On lance Autopsy.
@@ -157,11 +164,11 @@ Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouve
 
 ![alt text](/assets/images/dfirMethodo/AutRes.png?raw=true "res")
 
-
-
 Maintenant , vous savez comment rechercher et récupérer des fichiers.
 
-## Petit Point Sur REDLINE :
+
+
+## Petit Point Sur REDLINE 
 
 L'outils [Redline](https://www.fireeye.fr/services/freeware/redline.html) de FireEye  permet de récupérer le profil de la machine ainsi que des informations intéressantes en plus de la R.A.M. Il propose une interface graphique pour l'analyse des données. Si vous êtes un adepte de Volatility , sachez que le dump est compatible.
 
@@ -180,8 +187,6 @@ Il suffit juste de l'ouvrir avec RedLine.
 ![alt text](/assets/images/dfirMethodo/menuCollecteur.png?raw=true "tasks")
 
 ![alt text](/assets/images/dfirMethodo/Collecteur3.png?raw=true "tasks")
-
-
 
 ## Quelques tools
 
@@ -257,7 +262,7 @@ SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion
 
 
 
-## Autoruns et persistances : 
+## Autoruns et persistances 
 
 En cas de compromission d'une machine, il est important de rechercher une backdoor car elle permet de récupérer des informations sur l'attaquant mais aussi de lui couper ses accès.
 
@@ -277,7 +282,7 @@ Les persistances sont majoritairement créé grâce à un(e) :
 
   
 
-### 1.1 la clé RUN :  
+### la clé RUN 
 
 | description                           | Clé                                                          |
 | ------------------------------------- | ------------------------------------------------------------ |
@@ -288,7 +293,7 @@ Il suffit de vérifier la malveillance des binaires présent dans les entrés, l
 
 
 
-### 1.2 Les tâches planifiées : 
+### Les tâches planifiées 
 
 On peut les récupérer avec PowerShell : 
 ```powershell
@@ -299,7 +304,7 @@ SchTasks.exe
 
 
 
-### 1.3 Les services 
+###  Les services 
 
 On peut les récupérer avec PowerShell : 
 
@@ -311,7 +316,7 @@ Get-Service
 
 
 
-### 1.4 Les requêtes wmi
+### Les requêtes wmi
 
 Idem avec Powershell
 
@@ -323,7 +328,7 @@ Get-WmiObject -Class __EventConsumer -Namespace root\subscription
 
 
 
-### 1.5 Drivers et autres : 
+### Drivers et autres 
 
 Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique : 
 
@@ -331,9 +336,7 @@ Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique 
 
 
 
-
-
-### 1.7 Process
+### Process
 
 Récupérer les evenement par processus :
 
@@ -375,15 +378,13 @@ dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
 
 Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3  "attaques").
 
-
-
 ### Parser la MFT
 
 Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
 
 Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qui marche très bien.
 
-### 2.4 Parser l'Amcache
+###  Parser l'Amcache
 
 > L’AmCache est une base de données spécifiques à Windows 7, 8 et 10 et leurs équivalents serveurs, qui consigne des métadonnées portant sur l’exécution de binaires et l’installation de programmes sur un système. Méconnue et objet de recherches insuffisantes, cette base constitue un artefact sous-exploité dans le cadre des investigations numériques.
 
@@ -430,9 +431,9 @@ Il permet, comme son nom l'indique de voir les dernières activités faites sur 
 
 
 
-## 3 Matériel et autre
+## Matériel et autre
 
-### 3.1 Clés usb : 
+### Clés usb 
 
 Pour lister les clés branchées au moins une fois sur la machine : 
 
@@ -457,7 +458,7 @@ Get-ItemProperty -ErrorAction SilentlyContinue -Path clé-de-reg-ici
 
 # Informations utiles 
 
-## 1 Le trousseau de clés
+##  Le trousseau de clés
 
 -
 Alors avant toute chose, on va essayer de comprendre ce qu'est une clé de registre .
@@ -839,7 +840,7 @@ HKLM\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
 HKCU\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
 ```
 
-## 2 L'investigations des journaux (LOG)
+## L'investigations des journaux (LOG)
 -
 
 Les logs sont ici : C:\Windows\System32\winevt\log\
@@ -897,7 +898,7 @@ Des infos de connexion :
 
 
 
-# 3 Produire une timeline 
+# Produire une timeline 
 
 -
 
@@ -911,7 +912,7 @@ Un exemple d'une timeline fait par la SANS :
 
 ![Timeline](/assets/images/dfirMethodo/Timeline.png?raw=true "timeline")
 
-# 4 Analyse et Rapport
+# Analyse et Rapport
 -
 
 Il faut donc faire la synthèse de tous les éléments trouvés et essayer d'en tirer des conclusions. C'est la partie la plus difficile  mais elle est nécessaire.  
@@ -920,7 +921,7 @@ Il n'y a pas de technique ici, pensez que c'est comme une analyse de texte au ba
 N'oubliez pas, l'analyse permet de tirer des conclusions  grâce aux éléments trouvés lors de l'investigation.
 Elle doit être présente et justifiée dans le rapport que vous allez rendre à votre client.
 
-# 5 Conclusion
+# Conclusion
 -
 
 Nous voila arrivé à la fin, j'espère que cela aura pu vous être utile. Notez que cette méthodologie ne couvre pas tout ! Si vous voyez des erreurs ou des choses à rajouter n'hésitez pas pour qu'on puisse améliorer au maximum cet article.
