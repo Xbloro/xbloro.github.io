@@ -104,7 +104,7 @@ On oublie pas de bien cloisonner la machine pour éviter toute fuite par le rés
 Dans le cadre de l'investigation nous allons utiliser [Autopsy](https://www.sleuthkit.org/autopsy/ "Autopsy") car c'est un outils très complet, reconnu et distribué gratuitement.  
 Si vous avez beaucoup d'argent vous pouvez en choisir un autre comme Encase ou Magnet.
 
-On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "regripper").
+On oublie pas de prendre [Regripper](https://github.com/keydet89/RegRipper2.8 "regripper") même si c'est pas le top car il manque des infos.
 
 
 
@@ -161,6 +161,26 @@ Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouve
 
 Maintenant , vous savez comment rechercher et récupérer des fichiers.
 
+# Petit Point Sur REDLINE :
+
+L'outils [Redline](https://www.fireeye.fr/services/freeware/redline.html) de FireEye  permet de récupérer le profil de la machine ainsi que des informations intéressantes en plus de la R.A.M. Il propose une interface graphique pour l'analyse des données. Si vous êtes un adepte de Volatility , sachez que le dump est compatible.
+
+Le logiciel fonctionne de cette façon, vous choisissez les informations que vous souhaitez récupérer et vous créez un payload que vous déposerez sur un média amovible. Pourquoi? car il ne faut pas compromettre les données de la machine et donc ne rien transférer ou exécuter dessus. C'est pour cela que notre payload sera exécuté SUR le média amovible. Notez que la RAM sera déposée sur votre média amovible il faut donc que la capacité mémoire de ce dernier soit plus élevé que la RAM de la machine.
+
+Dans le menu on nous propose 3 choix :
+-Le premier permet de récupérer des informations sur la machines (utilisateurs, profile machine, etc.) et de dumper la RAM;
+-Le second permet la même chose mais en plus de rechercher des IOCs (vous pouvez lui fournir une liste perso) ;
+-Le dernier permet de rechercher ses propres IOC. (Si vous êtes dans une entreprise et que vous voulez chercher des traces d'intrusions dans toute la foret info c'est assez sympa, suffit de déployer le payload via PowerShell  ).
+
+A présent, on branche le média amovible sur le Windows cible et on exécute le script "RunRedlineAudit.bat".
+
+Une fois l'opération terminée, un fichier "AnalysisSessionX.mans " est créé dans le répertoire de votre payload.
+Il suffit juste de l'ouvrir avec RedLine.
+
+![alt text](/assets/images/dfirMethodo/menuCollecteur.png?raw=true "tasks")
+
+![alt text](/assets/images/dfirMethodo/collecteur3.png?raw=true "tasks")
+
 # Investigation LIVE or DEAD
 -
 
@@ -169,6 +189,8 @@ Que ce soit en live or DEAD les taches suivantes sont clés.
 Voici les étapes que nous allons effectuer :  
 
 - Auditer les "autoruns" et rechercher des persistances;
+
+- Récupérer les informations machines;
 
 - Récuperer la jumplist;
 
@@ -180,7 +202,7 @@ Voici les étapes que nous allons effectuer :
 
 - Parser le Shimcache;
 
-- Parser le Ntuser.dat;
+- Parser le Ntuser.dat; 
 
 - Regarder les "last activity view";
 
@@ -194,14 +216,37 @@ Voici les étapes que nous allons effectuer :
 
 - récupération des shadows copie;
 
+- checker les connexions réseau
+
 - Faire une fls;
 
 - Parser la mft;
 
   
+  
+## Les informations Machine 
+
+La timeZone : 
+
+  ```
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\TimeZoneInformation
+  ```
+
+  Les Users :
+
+```
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList
+```
+
+Les infos machine :
+
+```
+SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion
+```
 
 
-## 1 Autoruns et persistances : 
+
+## Autoruns et persistances : 
 
 En cas de compromission d'une machine, il est important de rechercher une backdoor car elle permet de récupérer des informations sur l'attaquant mais aussi de lui couper ses accès.
 
@@ -275,17 +320,300 @@ Ici on peut utiliser l'outils "autoruns" de SysInternals qui est très pratique 
 
 
 
-## 2 Fichiers et timeline
+### 1.6 Liste des Clés à checker
+
+Une petite liste mais c'est long :), go checker avec autoruns !
+
+```
+Annexe : Logon
+HKLM\System\CurrentControlSet\Control\Terminal Server\Wds\rdpwd\StartupPrograms
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\AppSetup
+HKLM\Software\Policies\Microsoft\Windows\System\Scripts\Startup
+HKCU\Software\Policies\Microsoft\Windows\System\Scripts\Logon
+HKLM\Software\Policies\Microsoft\Windows\System\Scripts\Logon
+HKCU\Environment\UserInitMprLogonScript
+HKLM\Environment\UserInitMprLogonScript
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Userinit
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\VmApplet
+HKLM\Software\Policies\Microsoft\Windows\System\Scripts\Shutdown
+HKCU\Software\Policies\Microsoft\Windows\System\Scripts\Logoff
+HKLM\Software\Policies\Microsoft\Windows\System\Scripts\Logoff
+HKCU\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Startup
+HKLM\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Startup
+HKCU\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Logon
+HKLM\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Logon
+HKCU\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Logoff
+HKLM\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Logoff
+HKCU\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown
+HKLM\Software\Microsoft\Windows\CurrentVersion\Group Policy\Scripts\Shutdown
+HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\System\Shell
+HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Shell
+HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\Shell
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Shell
+HKLM\SYSTEM\CurrentControlSet\Control\SafeBoot\AlternateShell
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Taskman
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Winlogon\AlternateShells\AvailableShells
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Runonce
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunonceEx
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run
+HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp\InitialProgram
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+HKCU\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnceEx
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnceEx
+HKCU\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnceEx
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+HKCU\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\RunOnce
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Load
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Windows\Run
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer\Run
+HKLM\SOFTWARE\Microsoft\Active Setup\Installed Components
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Active Setup\Installed Components
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Windows\IconServiceLib
+HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Runonce
+HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\RunonceEx
+HKCU\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Terminal Server\Install\Software\Microsoft\Windows\CurrentVersion\Run
+HKLM\SOFTWARE\Microsoft\Windows CE Services\AutoStartOnConnect
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows CE Services\AutoStartOnConnect
+HKLM\SOFTWARE\Microsoft\Windows CE Services\AutoStartOnDisconnect
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows CE Services\AutoStartOnDisconnect
+
+Annexe 2 :  explorer
+HKCU\SOFTWARE\Classes\Protocols\Filter	
+HKCU\SOFTWARE\Classes\Protocols\Handler
+HKCU\SOFTWARE\Microsoft\Internet Explorer\Desktop\Components				
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\SharedTaskScheduler				
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\SharedTaskScheduler					
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellServiceObjects					
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellServiceObjects					
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\ShellServiceObjects					
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\ShellServiceObjectDelayLoad					
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\ShellServiceObjectDelayLoad					
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\ShellServiceObjectDelayLoad					
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellExecuteHooks					
+HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellExecuteHooks					
+HKCU\Software\Classes\*\ShellEx\ContextMenuHandlers										
+HKLM\Software\Wow6432Node\Classes\*\ShellEx\ContextMenuHandlers					
+HKCU\Software\Classes\Drive\ShellEx\ContextMenuHandlers				
+HKLM\Software\Wow6432Node\Classes\Drive\ShellEx\ContextMenuHandlers					
+HKCU\Software\Classes\*\ShellEx\PropertySheetHandlers										
+HKLM\Software\Wow6432Node\Classes\*\ShellEx\PropertySheetHandlers					
+HKCU\Software\Classes\AllFileSystemObjects\ShellEx\ContextMenuHandlers
+HKLM\Software\Classes\AllFileSystemObjects\ShellEx\ContextMenuHandlers					
+HKLM\Software\Wow6432Node\Classes\AllFileSystemObjects\ShellEx\ContextMenuHandlers					
+HKCU\Software\Classes\AllFileSystemObjects\ShellEx\DragDropHandlers
+HKLM\Software\Classes\AllFileSystemObjects\ShellEx\DragDropHandlers					
+HKLM\Software\Wow6432Node\Classes\AllFileSystemObjects\ShellEx\DragDropHandlers					
+HKCU\Software\Classes\AllFileSystemObjects\ShellEx\PropertySheetHandlers
+HKLM\Software\Classes\AllFileSystemObjects\ShellEx\PropertySheetHandlers					
+HKLM\Software\Wow6432Node\Classes\AllFileSystemObjects\ShellEx\PropertySheetHandlers					
+HKCU\Software\Classes\Directory\ShellEx\ContextMenuHandlers	
+HKLM\Software\Classes\Directory\ShellEx\ContextMenuHandlers					
+HKLM\Software\Wow6432Node\Classes\Directory\ShellEx\ContextMenuHandlers					
+HKCU\Software\Classes\Directory\Shellex\DragDropHandlers					
+HKLM\Software\Classes\Directory\Shellex\DragDropHandlers					
+HKLM\Software\Wow6432Node\Classes\Directory\Shellex\DragDropHandlers				
+HKCU\Software\Classes\Directory\Shellex\PropertySheetHandlers					
+HKLM\Software\Classes\Directory\Shellex\PropertySheetHandlers					
+HKLM\Software\Wow6432Node\Classes\Directory\Shellex\PropertySheetHandlers					
+HKCU\Software\Classes\Directory\Shellex\CopyHookHandlers					
+HKLM\Software\Classes\Directory\Shellex\CopyHookHandlers					
+HKLM\Software\Wow6432Node\Classes\Directory\Shellex\CopyHookHandlers					
+HKCU\Software\Classes\Directory\Background\ShellEx\ContextMenuHandlers					
+HKLM\Software\Classes\Directory\Background\ShellEx\ContextMenuHandlers		
+HKLM\Software\Wow6432Node\Classes\Directory\Background\ShellEx\ContextMenuHandlers		
+HKCU\Software\Classes\Folder\Shellex\ColumnHandlers
+HKLM\Software\Classes\Folder\Shellex\ColumnHandlers					
+HKLM\Software\Wow6432Node\Classes\Folder\Shellex\ColumnHandlers					
+HKCU\Software\Classes\Folder\ShellEx\ContextMenuHandlers
+HKLM\Software\Classes\Folder\ShellEx\ContextMenuHandlers					
+HKLM\Software\Wow6432Node\Classes\Folder\ShellEx\ContextMenuHandlers					
+HKCU\Software\Classes\Folder\ShellEx\DragDropHandlers
+HKLM\Software\Classes\Folder\ShellEx\DragDropHandlers			
+HKLM\Software\Wow6432Node\Classes\Folder\ShellEx\DragDropHandlers				
+HKCU\Software\Classes\Folder\ShellEx\ExtShellFolderViews
+HKLM\Software\Classes\Folder\ShellEx\ExtShellFolderViews					
+HKLM\Software\Wow6432Node\Classes\Folder\ShellEx\ExtShellFolderViews					
+HKCU\Software\Classes\Folder\ShellEx\PropertySheetHandlers
+HKLM\Software\Classes\Folder\ShellEx\PropertySheetHandlers					
+HKLM\Software\Wow6432Node\Classes\Folder\ShellEx\PropertySheetHandlers					
+HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers	
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers					
+HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\ShellIconOverlayIdentifiers					
+HKCU\Software\Classes\Clsid\{AB8902B4-09CA-4bb6-B78D-A8F59079A8D5}\Inprocserver32	
+HKCU\Software\Microsoft\Ctf\LangBarAddin					
+HKLM\Software\Microsoft\Ctf\LangBarAddin		
+
+Annexe : Objet IE
+HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects		
+HKLM\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\Browser Helper Objects
+HKCU\Software\Microsoft\Internet Explorer\UrlSearchHooks					
+HKLM\Software\Microsoft\Internet Explorer\Toolbar					
+HKLM\Software\Wow6432Node\Microsoft\Internet Explorer\Toolbar					
+HKCU\Software\Microsoft\Internet Explorer\Explorer Bars				
+HKLM\Software\Microsoft\Internet Explorer\Explorer Bars					
+HKCU\Software\Wow6432Node\Microsoft\Internet Explorer\Explorer Bars
+HKLM\Software\Wow6432Node\Microsoft\Internet Explorer\Explorer Bars					
+HKCU\Software\Microsoft\Internet Explorer\Extensions				
+HKLM\Software\Microsoft\Internet Explorer\Extensions					
+HKCU\Software\Wow6432Node\Microsoft\Internet Explorer\Extensions
+HKLM\Software\Wow6432Node\Microsoft\Internet Explorer\Extensions
+
+Annexe : Service
+HKLM\System\CurrentControlSet\Services				
+
+Annexe : Drivers
+HKLM\System\CurrentControlSet\Services
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Font Drivers
+
+Annexe : codecs
+HKCU\Software\Microsoft\Windows NT\CurrentVersion\Drivers32					
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Drivers32					
+HKCU\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Drivers32
+HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Drivers32					
+HKCU\Software\Classes\Filter					
+HKLM\Software\Classes\Filter					
+HKCU\Software\Classes\CLSID\{083863F1-70DE-11d0-BD40-00A0C911CE86}\Instance
+HKCU\Software\Wow6432Node\Classes\CLSID\{083863F1-70DE-11d0-BD40-00A0C911CE86}\Instance
+HKCU\Software\Classes\CLSID\{AC757296-3522-4E11-9862-C17BE5A1767E}\Instance
+HKCU\Software\Wow6432Node\Classes\CLSID\{AC757296-3522-4E11-9862-C17BE5A1767E}\Instance
+HKCU\Software\Classes\CLSID\{7ED96837-96F0-4812-B211-F13C24117ED3}\Instance
+HKCU\Software\Wow6432Node\Classes\CLSID\{7ED96837-96F0-4812-B211-F13C24117ED3}\Instance
+HKCU\Software\Classes\CLSID\{ABE3B9A4-257D-4B97-BD1A-294AF496222E}\Instance
+HKCU\Software\Wow6432Node\Classes\CLSID\{ABE3B9A4-257D-4B97-BD1A-294AF496222E}\Instance
+HKLM\Software\Classes\CLSID\{083863F1-70DE-11d0-BD40-00A0C911CE86}\Instance					
+HKLM\Software\Wow6432Node\Classes\CLSID\{083863F1-70DE-11d0-BD40-00A0C911CE86}\Instance						
+HKLM\Software\Classes\CLSID\{AC757296-3522-4E11-9862-C17BE5A1767E}\Instance
+HKLM\Software\Wow6432Node\Classes\CLSID\{AC757296-3522-4E11-9862-C17BE5A1767E}\Instance
+HKLM\Software\Classes\CLSID\{7ED96837-96F0-4812-B211-F13C24117ED3}\Instance					
+HKLM\Software\Wow6432Node\Classes\CLSID\{7ED96837-96F0-4812-B211-F13C24117ED3}\Instance					
+HKLM\Software\Classes\CLSID\{ABE3B9A4-257D-4B97-BD1A-294AF496222E}\Instance
+HKLM\Software\Wow6432Node\Classes\CLSID\{ABE3B9A4-257D-4B97-BD1A-294AF496222E}\Instance
+
+Annexe : Boot execute
+HKLM\System\CurrentControlSet\Control\Session Manager\BootExecute					
+HKLM\System\CurrentControlSet\Control\Session Manager\SetupExecute				
+HKLM\System\CurrentControlSet\Control\Session Manager\Execute					
+HKLM\System\CurrentControlSet\Control\Session Manager\S0InitialCommand		
+
+Annexe : Image Hijacks
+HKLM\Software\Microsoft\Windows NT\CurrentVersion\Image File Execution Options					
+HKLM\Software\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Image File Execution Options					
+HKLM\Software\Microsoft\Command Processor\Autorun					
+HKLM\Software\Wow6432Node\Microsoft\Command Processor\Autorun					
+HKCU\Software\Microsoft\Command Processor\Autorun					
+HKCU\SOFTWARE\Classes\Exefile\Shell\Open\Command\(Default)
+HKLM\SOFTWARE\Classes\Exefile\Shell\Open\Command\(Default)			
+HKLM\Software\Classes\.exe					
+HKCU\Software\Classes\.exe				
+HKLM\Software\Classes\.cmd					
+HKCU\Software\Classes\.cmd					
+HKCU\SOFTWARE\Classes\Htmlfile\Shell\Open\Command\(Default)
+HKLM\SOFTWARE\Classes\Htmlfile\Shell\Open\Command\(Default)				
+
+Annexe : Appinit
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Windows\Appinit_Dlls					
+HKLM\SOFTWARE\Wow6432Node\Microsoft\Windows NT\CurrentVersion\Windows\Appinit_Dlls					
+HKLM\System\CurrentControlSet\Control\Session Manager\AppCertDlls		
+
+Annexe : KnownDlls
+HKLM\System\CurrentControlSet\Control\Session Manager\KnownDlls			
+
+Annexe : WinLogon
+HKLM\SYSTEM\Setup\CmdLine					
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Providers					
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\Credential Provider Filters					
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Authentication\PLAP Providers					
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\Taskman					
+HKCU\SOFTWARE\Policies\Microsoft\Windows\Control Panel\Desktop\Scrnsave.exe
+HKCU\Control Panel\Desktop\Scrnsave.exe					
+HKLM\System\CurrentControlSet\Control\BootVerificationProgram\ImagePath					
+HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\GpExtensions		
+
+Annexe : WinsockProvider
+HKLM\System\CurrentControlSet\Services\WinSock2\Parameters\Protocol_Catalog9\Catalog_Entries					
+HKLM\System\CurrentControlSet\Services\WinSock2\Parameters\NameSpace_Catalog5\Catalog_Entries					
+HKLM\System\CurrentControlSet\Services\WinSock2\Parameters\Protocol_Catalog9\Catalog_Entries64					
+HKLM\System\CurrentControlSet\Services\WinSock2\Parameters\NameSpace_Catalog5\Catalog_Entries64			
+
+Annexe : Print monitor
+HKLM\SYSTEM\CurrentControlSet\Control\Print\Monitors					
+HKLM\SYSTEM\CurrentControlSet\Control\Print\Providers	
+
+Annexe : Lsa provider
+HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\SecurityProviders					
+HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Authentication Packages					
+HKLM\SYSTEM\CurrentControlSet\Control\Lsa\Notification Packages	
+
+Annexe : Network provider
+HKLM\SYSTEM\CurrentControlSet\Control\NetworkProvider\Order	
+
+Annexe : Office plugins
+HKLM\Software\Microsoft\Office\Outlook\Addins						
+HKCU\Software\Microsoft\Office\Outlook\Addins
+HKLM\Software\Wow6432Node\Microsoft\Office\Outlook\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\Outlook\Addins
+HKLM\Software\Microsoft\Office\Excel\Addins
+HKCU\Software\Microsoft\Office\Excel\Addins					
+HKLM\Software\Wow6432Node\Microsoft\Office\Excel\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\Excel\Addins
+HKLM\Software\Microsoft\Office\PowerPoint\Addins
+HKCU\Software\Microsoft\Office\PowerPoint\Addins	
+HKLM\Software\Wow6432Node\Microsoft\Office\PowerPoint\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\PowerPoint\Addins
+HKLM\Software\Microsoft\Office\Word\Addins
+HKCU\Software\Microsoft\Office\Word\Addins	
+HKLM\Software\Wow6432Node\Microsoft\Office\Word\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\Word\Addins
+HKLM\Software\Microsoft\Office\Access\Addins
+HKCU\Software\Microsoft\Office\Access\Addins
+HKLM\Software\Wow6432Node\Microsoft\Office\Access\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\Access\Addins
+HKLM\Software\Microsoft\Office\Onenote\Addins
+HKCU\Software\Microsoft\Office\Onenote\Addins
+HKLM\Software\Wow6432Node\Microsoft\Office\Onenote\Addins
+HKCU\Software\Wow6432Node\Microsoft\Office\Onenote\Addins
+HKLM\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
+HKCU\SOFTWARE\Microsoft\Office test\Special\Perf\(Default)
+```
+
+### 1.7 Process
+
+Récupérer les evenement par processus :
+
+```powershell
+Get-WinEvent -FilterHashTable @{Logname = "Security" ; ID = 5059,5061}
+```
 
 
 
-### 2.1 Eléments supprimés
+## Le réseau
+
+Sysinternal TCP view fait très bien le taff :)
+
+![alt text](/assets/images/dfirMethodo/tcpview.png?raw=true "tasks")
+
+Get TCP by PID
+
+```powershell
+while($true){ $processes = (Get-NetTCPConnection | ? {($_.RemoteAddress -eq "IPaddr")}).OwningProcess; foreach ($process in $processes) { Get-Process -PID $process | select ID,ProcessName } }
+```
+
+
+
+## Fichiers et timeline
+
+###  Eléments supprimés
 
 On peut les récupérer comme vue avec Autopsy, si non [PhotoRec](https://www.cgsecurity.org/wiki/PhotoRec "PhotoRec")  marche très bien.
 
-
-
-### 2.2 Fichiers intéressants
+### Fichiers intéressants
 
 Vous êtes parfois  amener à chercher des fichiers (IOC etc.)
 
@@ -299,13 +627,13 @@ Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités l
 
 
 
-### 2.3 Parser la MFT
+
+
+### Parser la MFT
 
 Parser la MFT permet de  récupérer des informations sur les fichiers notamment les dates de modifications, ce qui s'avère utile pour établir une timeline et rechercher une éventuelle compromission.
 
 Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qui marche très bien.
-
-
 
 ### 2.4 Parser l'Amcache
 
@@ -315,9 +643,21 @@ Voici une [lib](https://sourceforge.net/projects/ntfsreader/  "ibrairie ") c# qu
 
 Un tool pour le parser [ici](https://github.com/EricZimmerman/AmcacheParser  "ici"), fait par Eric ZIMMERMAN un des formateurs SANS, je recommande vraiment d'aller voir son travail.
 
+### Parser le NTUSER.dat
 
+Les ShellBags :
 
-### 2.5 Faire une FLS
+La pluspart des shellBags sont dans le NTUSER.DAT
+
+>  Every time you make a change to the look and behavior of Windows and installed programs, whether that’s your desktop background, monitor resolution, or even which printer is the default, Windows needs to remember your preferences the next time it loads.
+
+Petit  [article](https://www.sans.org/reading-room/whitepapers/forensics/windows-shellbag-forensics-in-depth-34545) SANS sur les shellBags
+
+>  Microsoft Windows records the view preferences of folders and Desktop. Therefore, when the folder/Desktop is visited again, Windows can remember the location of the folder, view and positions of items. Microsoft Windows store the view preferences in the registry keys and values known as “ShellBags”.
+>
+> ShellBag information is crucial when forensicators need to know when and which folder a user accessed. For instance, when a company suspects an employee leaked a confidential document stored on the network, that employee’s computer may have the ShellBag information that demonstrates the folder containing that document was accessed shortly before the document was leaked. Furthermore, ShellBags may also show the folders or servers that employee should not access. 
+
+###  Faire une FLS
 
 La FLS permet, d'établir une timeline de modification des fichiers, à l'instar du parsing de la mft vu précédment.
 
@@ -326,9 +666,7 @@ TSK propose un tool [ici](https://wiki.sleuthkit.org/index.php?title=Fls "ici").
 J'ai fait un tool en GUI pour Windows [ici](https://github.com/Xbloro/FLSGUI "ici")
 ([l'article](https://xbloro.github.io/tool/GUI-FLS-Tool/ "l'article"))
 
-
-
-### 2.6 Jumplist
+###  Jumplist
 
 La jumpList contient les fichiers récent ouvert par des applications ou l'utilisateur , elle se trouve ici :
 
@@ -336,9 +674,7 @@ La jumpList contient les fichiers récent ouvert par des applications ou l'utili
 Nom de l'user +"\\AppData\\Roaming\\Microsoft\\Windows\\Recent"; 
 ```
 
-
-
-### 2.7 Last Activity view
+###  Last Activity view
 
 Last activity view est un tool bien pratique de nirsoft accessible [ici](https://www.nirsoft.net/utils/computer_activity_view.html "ici")
 
@@ -348,8 +684,6 @@ Il permet, comme son nom l'indique de voir les dernières activités faites sur 
 
 ## 3 Matériel et autre
 
-
-
 ### 3.1 Clés usb : 
 
 Pour lister les clés branchées au moins une fois sur la machine : 
@@ -357,8 +691,6 @@ Pour lister les clés branchées au moins une fois sur la machine :
 ```powershell
 Get-ItemProperty -ErrorAction SilentlyContinue -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*\*
 ```
-
-
 
 Vous pouvez lister les éléments ci-dessous en changeant le path de la commande :
 
@@ -569,8 +901,6 @@ Elle permet de voir si des choses sont manquantes au niveau de l'enquête, par e
 Un exemple d'une timeline fait par la SANS : 
 
 ![Timeline](/assets/images/dfirMethodo/Timeline.png?raw=true "timeline")
-
-
 
 # 4 Analyse et Rapport
 -
