@@ -161,7 +161,7 @@ Par exemple, si vous trouvez une image pornographique (ca arrive...), vous pouve
 
 Maintenant , vous savez comment rechercher et récupérer des fichiers.
 
-# Petit Point Sur REDLINE :
+## Petit Point Sur REDLINE :
 
 L'outils [Redline](https://www.fireeye.fr/services/freeware/redline.html) de FireEye  permet de récupérer le profil de la machine ainsi que des informations intéressantes en plus de la R.A.M. Il propose une interface graphique pour l'analyse des données. Si vous êtes un adepte de Volatility , sachez que le dump est compatible.
 
@@ -180,6 +180,17 @@ Il suffit juste de l'ouvrir avec RedLine.
 ![alt text](/assets/images/dfirMethodo/menuCollecteur.png?raw=true "tasks")
 
 ![alt text](/assets/images/dfirMethodo/Collecteur3.png?raw=true "tasks")
+
+
+
+## Quelques tools
+
+[EZ tool ](https://digital-forensics.sans.org/community/downloads/digital-forensics-tools)
+[Nirsoft](https://www.nirsoft.net/)
+[SysInternal](https://docs.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite)
+[REDLINE](https://www.fireeye.com/services/freeware/redline.html)
+[Autopsy](https://www.sleuthkit.org/)
+
 
 # Investigation LIVE or DEAD
 -
@@ -202,7 +213,7 @@ Voici les étapes que nous allons effectuer :
 
 - Parser le Shimcache;
 
-- Parser le Ntuser.dat; 
+- Parser le Ntuser.dat et les shellbags; 
 
 - Regarder les "last activity view";
 
@@ -273,7 +284,7 @@ Les persistances sont majoritairement créé grâce à un(e) :
 | Liste des entrées dans l'invité "RUN" | HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU |
 | Les autoruns                          | HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run           |
 
-Il suffit de vérifier la malveillance des binaires présent dans les entrés.
+Il suffit de vérifier la malveillance des binaires présent dans les entrés, la liste entière des clés est dispo plus bas.
 
 
 
@@ -615,7 +626,7 @@ On peut les récupérer comme vue avec Autopsy, si non [PhotoRec](https://www.cg
 
 ### Fichiers intéressants
 
-Vous êtes parfois  amener à chercher des fichiers (IOC etc.)
+Vous êtes parfois  amenés à chercher des fichiers (IOC etc.)
 
 Un petit One Liner Powershell pour faire une recherche récursive
 
@@ -624,8 +635,6 @@ dir -Path C:\FolderName -Filter FileName.fileExtension -Recurse | %{$_.FullName}
 ```
 
 Je recommande de rechercher les fichers *.lnk car ils sont beaucoup exploités lors [d'attaques](https://support.radware.com/ci/okcsFattach/get/15458_3  "attaques").
-
-
 
 
 
