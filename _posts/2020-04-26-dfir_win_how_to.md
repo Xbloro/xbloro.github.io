@@ -179,7 +179,7 @@ Il suffit juste de l'ouvrir avec RedLine.
 
 ![alt text](/assets/images/dfirMethodo/menuCollecteur.png?raw=true "tasks")
 
-![alt text](/assets/images/dfirMethodo/collecteur3.png?raw=true "tasks")
+![alt text](/assets/images/dfirMethodo/Collecteur3.png?raw=true "tasks")
 
 # Investigation LIVE or DEAD
 -
